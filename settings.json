@@ -1,0 +1,13 @@
+{
+    "editor.wordWrap": "on",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "workbench.sideBar.location": "left",
+    "workbench.activityBar.visible": false,
+    "files.autoSave": "afterDelay",
+    "[java]": {
+    },
+    "liveServer.settings.CustomBrowser": "chrome",
+    "liveServer.settings.file": "index.html",
+    "liveServer.settings.useLocalIp": true,
+    "editor.accessibilitySupport": "off"
+}

@@ -1,118 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FOODIES WEB</title>
-<link rel="stylesheet" src="style.css">
+    <title>FOODIES WEB</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo2.png">
+
 
 </head>
 
 
-<body align="center" text="blue" style="background-color: bisque;">
-
-    
-    
-
-
-
-
-<h1><mark><u> HOME PAGE </h1></u></mark>
-       <h2><a href="Snack.html">SNACKS</a></h2> 
-        <h2><a href="Soup.html">SOUPS</a></h2>
-        <h2><a href="Contact me.html">CONTACT US</a></h2>
-
-
-
-
-<label style="color: black; position: relative;" for="Diferent categories">Select category:</label>
-<select name="Category List" id="Category List">
-    <option value="Snack.html"><a href="Snack.html">Snack</a></option>
-
-
-</select>
 
 
 
 
 
 
-
-<p><h3 style="color: black">This is the home page of this website, where you can buy different types of food or DRINKS.</h3>
-</p>
+    <div class="header-buttons">
 
 
+        <fieldset>
+           
 
-<!--to do:Chin Chin, check
-c-->
-<h1 style="color: maroon; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><u>TRENDING NOW!!!</h1></u>
-<p><li style="float: left; margin-right: 20px; padding-bottom: 20px black; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-    <a href="Buns.html"><img src="a.jpg" width="350" height="300"></a> 
-<p><h2 style="color: black">Buns </p></h2>
-<p><h2 style="color: black"> ₦150.00 
-    <h1><a style="color: black" href="Buns.html">Details</a></h1>
-</h2></p></li></p>
 
-<p><li style="float: left; margin-right: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-    <a href="Cakes.html"><img src="b.jpg" width="350" height="300"></a> 
-<p><h2 style="color: black">Cakes </p></h2>
-<p><h2 style="color: black"> ₦2,050.00 
-    <h1><a style="color: black" href="Cakes.html">Details</a></h1>
-</h2></p></li></p>
 
-<p><li style="float: left; margin-right: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-    <a href="Cookies.html"><img src="Cookies.png" width="350" height="300"></a>
-    <p><h2 style="color: black">Cookies </p></h2>
-    <p><h2 style="color: black"> ₦1,000.00 
-        <h1><a style="color: black" href="Cookies.html">Details</a></h1>
-    </h2></p></li></p>
+<img class="image2" src="logo2.png">
+            <h2><button style="float: left" class="header-button" onclick="goToSnack()" href="Snack.html">Snack
+                    Menu</button></h2>
+            <h2> <button style="float: left;" class="header-button" onclick="goToSoup()" href="Soup.html">Soups
+                    Menu</button></h2>
+            <h2> <button style="float: left" class="header-button" onclick="goToContact()"
+                    href="Contact me.html">Contact Me</button></h2>
+            <button class="go-to-cart" onclick="goToCart()"><img class="image1" style="float:left" src="Cart.png"
+                    width="50" height="50">
+                <span id="cart-count">0</span></button>
+    </div>
 
-    <p><li style="float: left; margin-right: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-        <a href="Meatpie.html"><img src="e.jpg" width="350" height="300"></a>
-        <p><h2 style="color: black">Meatpie </p></h2>
-        <p><h2 style="color: black"> ₦6,000.00 
-            <h1><a style="color: black" href="Meatpie.html">Details</a></h1>
-        </h2></p></li></p>
+    </fieldset>
 
-        <p><li style="float: left; margin-right: 20px; color: black; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-            <a href="Doughnut.html"><img src="dougnut.png" width="350" height="300"></a>
-            <p><h2 style="color: black"> FRESHLY BAKED DOUGHNUTS </p></h2>
-            <p><h2 style="color: black"> ₦950.00 
-                <h1><a style="color: black" href="Doughnut.html">DETAILS</a></h1>
-            </h2></p></li></p>
 
-            <p><li style="float: left; margin-right: 20px; color: black; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" >
-                <a href="AfangSoup.html"><img src="Afang soup.png" width="350" height="300"></a>
-                <p><h2 style="color: black">A PERFECTLY MADE PLATE OF AFANG SOUP </p></h2>
-                <p><h2> ₦1,000.00 
-                    <h1><a style="color: black" href="AfangSoup.html">DETAILS</a></h1>
-                </h2></p></li></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <br>
+    <h1 class="header-text"><mark><u> HOME PAGE </h1></u></mark>
+    <br>
+    <p>
+    <h2 style="color: #007bff">These are your cravings get them all and enjoy!!!</h2>
+    </p>
+    </br>
+    </br>
+
+    <!--to do:Chin Chin, check-->
+
+
+
+
+
+
+
+
+
+    <div class="product-container">
+        <h1 style="color: maroon; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><u>TRY
+                THEM NOW!!!</h1></u>
+        <p>
+            <li
+                style="float: left;  margin-right: 20px; padding-bottom: 20px black; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                <div class="product" data-id="1" data-name="Buns" data-price="150">
+                    <a href="Buns.html"><img class="image" src="a.jpg" width="350" height="300"></a>
+                    <p>
+                    <h2 style="color: #007bff">Buns</h2>
+        </p>
+        <h2 style="color: #007bff">
+            <p>Price: ₦150</p>
+        </h2>
+        <button style="color: #007bff;" class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+        <h1><button style="color: #007bff" class="add-to-cart" onclick="goToBuns()">Details</a></button></h1>
+        <script>
+
+        </script>
+    </div>
+    </li>
+    </p>
+
+    <p>
+        <li
+            style="float: left; margin-right: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    </p>
+
+   <div class="product" data-id="2" data-name="Cakes" data-price="1000">
+        <a href="Cakes.html"><img class="image" src="b.jpg" width="350" height="300"></a>
+        <p>
+        <h2 style="color: #007bff">Cakes </p>
+        </h2>
+        <p>
+        <h2 style="color: #007bff">Price: ₦1,000</h2>
+        </p>
+        <button style="color: #007bff;" class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+        <h1><button style="color: #007bff" class="add-to-cart" onclick="goToCake()">Details</button></h1>
+        <script>
+
+        </script>
+
+
+        </li>
+    </div>
+
+
+    <p>
+        <li style="float: left; margin-right: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    </p>
+    <div class="product" data-id="3" data-name="Cookies" data-price="1000">
+        <a href="Cookies.html"><img class="image" src="Cookies.png" width="350" height="300"></a>
+        <p>
+        <h2 style="color: #007bff">Cookies </p>
+        </h2>
+        <p>
+        <h2 style="color: #007bff"> ₦1,000.00 </h2>
+        </p>
+        <button style="color: #007bff;" class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+        <h1><button style="color: #007bff" class="add-to-cart" onclick="goToCookies()">Details</a></button></h1>
+        <script>
+
+        </script>
+        </li>
+    </div>
+
+    <p>
+        <li style="float: left; margin-right: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    </p>
+    <div class="product" data-id="4" data-name="Meatpie" data-price="700">
+        <a href="Meatpie.html"><img class="image" src="e.jpg" width="350" height="300"></a>
+        <p>
+        <h2 style="color: #007bff">Meatpie </p>
+        </h2>
+        <p>
+        <h2 style="color: #007bff"> ₦700.00</h2>
+        </p>
+        <button style="color: #007bff;" class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+        <h1><button style="color: #007bff" class="add-to-cart" onclick="goToMeatpie()">Details</a></button></h1>
+        <script>
+
+        </script>
+        </li>
+    </div>
+
+    <p>
+        <li
+            style="float: left; margin-right: 20px; color: #007bff; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    </p>
+    <div class="product" data-id="5" data-name="FRESHLY-BAKED-DOUGHNUTS" data-price="950">
+        <a href="Doughnut.html"><img class="image" class="" src="dougnut.png" width="350" height="300"></a>
+        <p>
+        <h2 style="color: #007bff"> FRESHLY BAKED DOUGHNUTS </p>
+        </h2>
+        <p>
+        <h2 style="color: #007bff"> ₦950.00 </h2>
+        </p>
+        <button style="color: #007bff;" class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+        <h1><button style="color: #007bff" class="add-to-cart" onclick="goToDoughnut()">Details</a></button></h1>
+        <script>
+
+        </script>
+        </li>
+    </div>
+
+    <p>
+        <li
+            style="float: left; margin-right: 20px; color: #007bff; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    </p>
+    <div class="product" data-id="6" data-name="Afang-Soup" data-price="5000">
+        <a href="AfangSoup.html"><img class="image" src="Afang soup.png" width="350" height="300"></a>
+        <p>
+        <h2 style="color: #007bff">A PERFECTLY MADE PLATE OF AFANG SOUP </p>
+        </h2>
+        <p>
+        <h2> ₦5,000.00 </h2>
+        </p>
+        <button style="color: #007bff;" class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+        <h1><button style="color: #007bff" class="add-to-cart" onclick="goToAfang()">Details</a></button></h1>
+        <script>
+
+        </script>
+        </li>
+    </div>
+
+
+
+
+
+    </div>
+
+
+
+    <script src="main.js"></script>
+
+
+    <br>
+    <br>
+    <!--Footer, taken care of -->
+    <div class="footer">
+        <fieldset style="margin-top: 0px; bottom: 0;" class="footer-fieldset">
+            <legend class="footer-legend"></legend>
+
+            <h2 style="margin-left: 0px;" class="footer-button">&copy; 2024 Maverick Links LTD, All Rights Reserved. Privacy Policy
                 
-                <p><li style="float: left; margin-right: 20px; color: black; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-                    <a href="ChinChin.html"><img src="Chin chin.png" width="350" height="300"></a>
-                    <p><h2 style="color: black">CHINCHIN </p></h2>
-                    <p><h2 style="color: black"> ₦500.00 
-                        <h1><a style="color: black;" href="ChinChin.html">DETAILS</a></h1>
-                    </h2></p></li></p>
+            </h2>
+        </fieldset>
 
-<script src="main.js"></script>
+    </div>
+</body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<p>
-    <marquee><h2>This site is built by master OBI ANI DAVID.The master of this website at just 13 years old. All rights reserved</marquee>
-    </h2></p>
-</body>    
 </html>

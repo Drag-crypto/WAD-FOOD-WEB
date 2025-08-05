@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header-buttons">
+        
+        <fieldset>
+            <legend></legend>
+            
+            <img style="float: left; margin-right: 10px; margin-bottom: 0px;" class="logo-image" src="logo.png"alt="food image" width="200" >
+            <h2> <button style="float: left" class="header-button" onclick="goHome()">Home</button></h2>
+            
+            <h2><button style="float: left; align-content: center;" class="header-button" onclick="goToSnack()" >Snack Menu</button></h2>
+            <h2> <button style="float: left" class="header-button" onclick="goToSoup()" >Soups Menu</button></h2>   
+            <h2><button style="float: left" class="go-to-cart" onclick="goToCart()"><img style src="Cart.png" width="50" height="50">
+            <span id="cart-count">0</span></button>  </h2>
+        </div>
+      </fieldset>
+
+      <p onclick="goToCart()">Click here to login into the screening page</p>
+
+<div class="form_container">
+      <form class="login">
+          <label for="username"></label>
+          <input type="text">
+          <input type="submit">
+      </form>
+    </div>
+      <script src="login.js"></script>
+      <script>
+          function goToCart(){
+              window.location.href = "Cart.html"
+          }
+
+          document.querySelector('.contact-me-form').addEventListener('submit-form', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+})
+
+
+          
+      </script>
+</body>
+</html>

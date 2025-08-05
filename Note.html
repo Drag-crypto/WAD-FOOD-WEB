@@ -2,17 +2,19 @@
 <html>
 <head>
 <title>Home made Chin Chin</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body style="background-color: white;">
+<body style="background-color: bisque;">
 
-    <p><li style="float: left; margin-right: 20px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: large;">
-    <h1><a href="Checkout.html">Checkout and the other shopping stuff aren't available now.</h1></a>
-    <p><h1><a href="Checkout.html">Click and you will be directed to a page where you will send a message of what you are purchasing and send </h1></p>
+    
+
+    <p><h1><button class="add-to-cart" onclick="goToCheckout(this)">Click and you will be directed to a page where you will input your email and then place order. </h1></p>
+        <p><h1><button class="add-to-cart" onclick="goToCheckout(this)">This is not one of those websites where you have to go through ads and install whatever to place your order, your order is secure and you can be assured of it.</button></h1></p> 
 
         
 
@@ -25,6 +27,10 @@
 
     
 
-
+<script>
+    function goToCheckout(){
+        window.location.href='Checkout.html'
+    }
+</script>
 </body>
 </html>

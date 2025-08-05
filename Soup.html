@@ -1,117 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FOODIES WEB</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
-<body align= "center">
-<body text="White"bgcolor="Black">
-<img src="Soup1.png">                                 
-<h1> SOUP WEB </h1>
+<body translate="yes" style="text-align: center; background-color: bisque; color: #007bff;">
 
-<a href="index.html"> HOME</a>
-<a href="Snack.html">SNACKS</a>
-<a href="Contact me.html"> CONTACT ME</a>
+                             
+<h1><u> SOUP WEB </h1></u>
+
+
+<div class="header-buttons">
+        
+    <fieldset>
+        <legend></legend>
+        
+        <img class="image2" src="logo2.png">
+        <h2> <button style="float: left;" class="header-button" onclick="goHome()">Home</button></h2>
+        <h2><button style="float: left" class="header-button" onclick="goToSnack()">Snack Menu</button></h2>   
+       <h2> <button style="float: left" class="header-button" onclick="goToContact()" href="Contact me.html">Contact Me</button></h2>
+       <button style="float: left" class="go-to-cart" onclick="goToCart()"><img class="image1" style="float:left" src="Cart.png" width="50" height="50">
+       <span id="cart-count">0</span></button>  
+    </div>
+    
+</fieldset>
+
+
+
 
 <h1 align="center">This is the page of foodies web where you learn about different types of Nigerian soup</h1>
-<h1 align="center">LIST OF AVAILABLE SOUPS IN NIGERIA</h1>
-<ul>
-<h3><li>Egusi soup
-<p>
-<h3><li>Okro soup
-<p>
-<li>Ewedu soup
-<p>
-<li>Oha soup
-<p>
-<li>Afang soup
-<p>
-<li>Ogbonno  soup
-<p>
-<li>Bitter leaf soup
-<p>
-<li>Vegetable soup
-<p>
-<li>White soup
-<p>
-<li>Groundnut soup
-</ul></li></h3>
-<img src="Groundnut so.png" width="466" lenght="578"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> Groundnut soup</h3></p>
-
-<p><h3>N1,000</p></h3>
-
-<img src="Oha soup.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> Oha soup</h3></p>
-
-<p><h3>N1,000</p></h3>
-
-<img src="okro in soup.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> okro soup</h3></p>
 
 
-<p><h3>N1,500</p></h3>
-
-<img src="egusi1.PNG" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> Egusi soup</h3></p>
 
 
-<p><h3>N960</p></h3>
+<p><li style="float: left; margin-right: 20px;"></p>
+    <div class="product" data-id="11" data-name="Okro-Soup" data-price="960">
+    <a href="Okro.html"><img class="image" src="okro in soup.png" width="350" height="300"></a> 
+<p><h2 style="color: #007bff">Okro Soup </p></h2>
+<p><h2 style="color: #007bff"> ₦960.00 </h2></p>                                                        
+<button class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+    <h1 style="color: #007bff"><button class="add-to-cart" style="color: #007bff" onclick="goToOkro()"><script>
+        
+    </script>Details</button></h1>
+</li></div>
 
-<img src="Afang soup.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> Afang soup</h3></p>
+<p><li style="float: left; margin-right: 20px;"></p>
+    <div class="product" data-id="12" data-name="Egusi-Soup" data-price="960">
+    <a href="Egusi.html"><img class="image" src="egusi1.png" width="350" height="300"></a> 
+<p><h2 style="color: #007bff">Egusi Soup</p></h2>
+<p><h2 style="color: #007bff"> ₦960.00 </h2></p>
+<button class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+    <h1 style="color: #007bff"><button class="add-to-cart" style="color: #007bff" onclick="goToEgusi()"><script>
+        
+    </script>Details</button></h1>
+</li></div>
+
+<p><li style="float: left; margin-right: 20px;"></p>
+    <div class="product" data-id="13" data-name="Afang-Soup" data-price="1000">
+    <a href="AfangSoup.html"><img class="image" src="Afang soup.png" width="350" height="300"></a> 
+<p><h2 style="color: #007bff">Afang Soup </p></h2>
+<p><h2 style="color: #007bff"> ₦1,000.00 </h2></p>
+<button class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+    <h1 style="color: #007bff"><button class="add-to-cart" style="color: #007bff" onclick="goToAfang()"><script>
+        
+    </script>Details</button></h1>
+</li></div>
+
+<p><li style="float: left; margin-right: 20px;"></p>
+    <div class="product" data-id="14" data-name="Ogbonno-Soup" data-price="2000">
+    <a href="Ogbonno.html"><img class="image" src="Ogbonno soup.png" width="350" height="300"></a> 
+<p><h2 style="color: #007bff">Ogbonno Soup </p></h2>
+<p><h2 style="color: #007bff"> ₦2,000.00 </h2></p>
+<button class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+    <h1 style="color: #007bff"><button class="add-to-cart" style="color: #007bff" onclick="goToOgbonno()"><script>
+        
+    </script>Details</button></h1>
+</li></div>
 
 
-<p><h3>N1,000</p></h3>
+<p><li style="float: left; margin-right: 20px;"></p>
+    <div class="product" data-id="15" data-name="White-Soup" data-price="1500">
+    <a href="WhiteSoup.html"><img class="image" src="White soup.png" width="350" height="300"></a> 
+<p><h2 style="color: #007bff">White Soup </p></h2>
+<p><h2 style="color: #007bff"> ₦1,500.00 </h2></p>
+<button class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+    <h1 style="color: #007bff"><button class="add-to-cart" style="color: #007bff" onclick="goToWhiteSoup()"><script>
+        
+    </script>Details</button></h1>
+</li></div>
 
-<img src="Ogbonno soup.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3>Ogbonno soup</h3></p>
+<p><li style="float: left; margin-right: 20px;"></p>
+    <div class="product" data-id="16" data-name="BitterLeaf-Soup" data-price="1500">
+    <a href="BitterLeaf.html"><img class="image" src="Bitter leaf.png" width="350" height="300"></a> 
+<p><h2 style="color: #007bff">Bitter Leaf Soup </p></h2>
+<p><h2 style="color: #007bff"> ₦1,500.00 </h2></p>
+<button class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+    <h1 style="color: #007bff"><button class="add-to-cart" style="color: #007bff" onclick="goToBitterLeaf()"><script>
+        
+    </script>Details</button></h1>
+</li></div>
 
-<p><h3>N5,000</p></h3>
-
-
-<img src="White soup.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> White soup</h3></p>
-
-
-<p><h3>N1,500</p></h3>
-
-<img src="Bitter leaf.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> Bitter leaf</h3></p>
-
-
-<p><h3>N1,000</p></h3>
-
-<img src="Vegetable soup.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> Vegetable soup</h3></p>
+<p><li style="float: left; margin-right: 20px;"></p>
+    <div class="product" data-id="17" data-name="Vegetable-Soup" data-price="1000">
+    <a href="Vegetable.html"><img class="image" src="Vegetable soup.png" width="350" height="300"></a> 
+<p><h2 style="color: #007bff">Vegetable Soup </p></h2>
+<p><h2 style="color: #007bff"> ₦1,000.00 </h2></p>
+<button class="add-to-cart" onclick="addToCart(this)">Add to Cart</button>
+    <h1 style="color: #007bff"><button class="add-to-cart" style="color: #007bff"onclick="goToVegetableSoup()"><script>
+        
+    </script>Details</button></h1>
+</li></div>
 
 
-<p><h3>N1,000</p></h3>
-
-<img src="Ewedu soup.png" width="150" lenght="100"-align="center">
-<p>
-<a href="Contact me.html">Place your order now</a>
-<p><h3> Ewedu soup</h3></p>
-
-<p><h3>N500</p></h3>
 
 <p>
 <p>
@@ -135,6 +139,45 @@
 
 
 
+<script src="main.js"></script>
 
-<marquee><h2>This site is built by master OBI ANI DAVID.The master of this website at just 13 years old. All rights reserved</marquee>
-</body><h2>
+<br>   
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+
+ <br><br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+
+<!--I'll take care of the positioning of the footer later-->
+<div class="footer">
+    <fieldset style="margin-top: 55px;" class="footer-fieldset">
+        <legend  class="footer-legend"></legend>
+
+        <h2  class="footer-button">2024 Maverick Links LTD, All Rights Reserved</h2>
+    </fieldset>
+
+</div>
+
+</body>
+    

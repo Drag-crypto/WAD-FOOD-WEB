@@ -1,36 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Checkout</title>
-</head>
-
-<meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<body align="center" style="background-color: bisque;">
-
-
-
-    <hr>
-    <fieldset>
-      <h1><legend>Checkout</legend></h1>
-      
-        <input type="hidden" name="_subject" value="Order placed.">
-			<textarea align="center" rows="10" cols="100" placeholder='Type in your message here' required></textarea>
-            <a href="mailto:obieanidavid20@gmail.com">SUBMIT</a>
-			</form>
-    </br>
-    </fieldset>
-  </form>
-<br>
-</hr>
-        
+    <link rel="stylesheet" href="style.css">
+    <title>Checkout</title>
+    
+</head>
+<body style="background-color: bisque;">
 
 
+   <button class="go-back" onclick="goBack()">Cancel Order<style>
+    .go-back {
+    display: inline-block;
+    padding: 12px 24px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #C2DDFF; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+.go-back:hover {
+    background-color: yellow; 
+    transform: translateY(-2px); 
+}
+
+
+.go-back:active {
+    background-color: orange; 
+    transform: translateY(0); 
+}
+   </style><script>
+    function goBack(){
+        window.location.href = 'index.html';
+    }
+   </script></button>
+   
+
+
+    <h1>Checkout</h1>
+    <form id="checkout-form">
+        <label for="user-email">Enter your email:</label>
+        <input type="email" id="user-email"  name="user_email" required aria-rowspan="10">
+        <button class="add-to-cart" type="submit" >Place Order</button>
+    </form>
+
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "0bV0nGc60YdArm6YR",
+      });
+   })();
+
+
+   document.getElementById('checkout-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+   
+    let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+    let itemsList = '';
+
+
+
+    cart.forEach(item => {
+        itemsList += `${item.name} x ${item.quantity} - ₦${item.price} = ₦${item.price * item.quantity}
+        ` ;
+    });
+
+    let total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+ 
+    function getTotalPrice(cart) {
+        return cart.reduce((total, item) => {
+           
+            let priceString = item.price.toString();
+            
+            let price = parseFloat(priceString.replace('₦', '')) || 0;
+            
+            return total + (price * item.quantity);
+        }, 0);
+    }
+
+    
+    let totalPrice = getTotalPrice(cart).toFixed(2);
+    totalPrice = "₦" + totalPrice; 
+
+    
+    let templateParams = {
+        to_email: 'obieanidavid20@gmail.com',
+        to_email:  document.getElementById('user-email').value,
+        order_details: itemsList,
+        total_price: totalPrice,
        
         
+    };
 
+    
+
+    
+    emailjs.send("service_i4u6uw4", "template_qhy8dlj", templateParams)
+        .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+
+          
+            localStorage.removeItem('cartItems')
+            
+           window.location.href= 'Thanks.html';
+        }, function(error) {
+            window.location.href = 'Error.html';
+            console.log('FAILED...', error);
+        });
+});
+
+       
+
+    </script>
 
 </body>
 </html>
+
+
+

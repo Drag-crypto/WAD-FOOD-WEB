@@ -2,78 +2,99 @@
 <html>
 <head>
 <title>FOODIES WEB</title>
+<link rel="stylesheet" href="style.css">
+<script type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+(function(){
+  emailjs.init({
+  publicKey: "0bV0nGc60YdArm6YR",
+});
+})();
+document.querySelector('.contact-me-form').addEventListener('submit-form', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    
+    // Convert FormData to an object
+    const templateParams = {
+      to_email: 'obieanidavid20@gmail.com',
+        from_name: formData.get('name'),
+        from_email: formData.get('email'),
+        message: formData.get('message')
+    };
+
+    emailjs.send("service_i4u6uw4", "template_m1w88kc", templateParams)
+        .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+
+
+
+ window.location.href = 'Thanks.html';
+         }, function(error) {
+
+            
+            console.log('FAILED...', error);
+            window.location.href = 'Error2.html'
+        })
+
+     
+        if (error === "ERR_INTERNET_DISCONNECTED") {
+          console.log('FAILED...', error);
+          window.location.href = 'Error2.html'
+        }
+  })
+</script>
 </head>
 
-<body align="center" text="Blue"bgcolor="bisque">
-<body >
+<body style="background-color: bisque; color: #007bff; text-align: center;">
+
 <h1> CONTACT ME </h1>
 
-<a href="index.html"> HOME</a>
-<a href="Soup.html"> SOUPS</a>
-<a href="Snack.html"> SNACKS</a>
+<div class="header-buttons">
+        
+  <fieldset>
+      <legend></legend>
+      
+      <img style="float: left; margin-right: 10px; margin-bottom: 0px;" class="logo-image" src="logo2.png"alt="food image" width="200" >
+      <h2> <button style="float: left" class="header-button" onclick="goHome()">Home</button></h2>
+      
+      <h2><button style="float: left; align-content: center;" class="header-button" onclick="goToSnack()" >Snack Menu</button></h2>
+      <h2> <button style="float: left" class="header-button" onclick="goToSoup()" >Soups Menu</button></h2>   
+      <h2><button style="float: left" class="go-to-cart" onclick="goToCart()"><img class="image1" src="Cart.png" width="50" height="50">
+        
+      <span id="cart-count">0</span></button>  </h2>
+      <div class="media-icons">
+            <a href="#"><img src="facebook.png" alt="facebook"></a>
+            <a href="#"><img src="X.png" alt="X"></a>
+            <a href="#"><img src="llinkedin.png" alt="linkedin"></a>
+        </div>
+  
+</fieldset>
+</div>
 
 
 
 
 
-
-<form id="survey-form">
-    <fieldset>
-      <legend>Introduce yourself</legend>
-      <h3><label id="name-label">Name
-        <input id="name" type="text" placeholder="Harry" required>
-      </label></h3>
-      <h3><label id="email-label">Email
-        <input id="email" type="email" placeholder="onlineservices@gmail.com" required>
-      </label></h3>
-      <h3><label id="number-label">Age (optional)
-        <input id="number" type="number" min="10" max="50" placeholder="Write age here" required>
-      </label></h3>
-    </fieldset>
-    <hr>
-    <fieldset>
-      <legend>Feedback</legend>
-      <label>How did you hear about us?
-        <select id="dropdown">
-          <option>Web</option>
-          <option>Friend</option>
-          <option>TV</option>
-          <option>Ad</option>
-        </select>
-      </label>
-      <label for="positive negative">Would you recommend us?
-        <input id="positive" type="radio" name="advice">Yes
-        <input id="negative" type="radio" name="advice">No<br></br>
-
-        <label for="yes no">Do we need to improve?
-          <input id="yes" type="radio" name="advice">Yes
-          <input id="no" type="radio" name="advice">No<br></br>
-      </label>
-
-      <label for="more less">How can we improve?
-        <input id="more" name="more" value="increase" type="checkbox">More content
-        <input id="less" name="less" value="decrease" type="checkbox">Less content <br>
-      </label>
-    </fieldset>
-    <hr>
-    <fieldset>
-      <legend>Other messages?</legend>
-      <form action="https://formsubmit.co/obieanidavid20@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Order placed.">
-			<textarea rows="10" cols="100" placeholder='Type in your message here' required></textarea>
-      <button type="submit">SEND A MESSAGE</button>
-			</form>
-    </br>
-    </fieldset>
+<form class="contact-me-form">
+  <label for="name">Name:</label>
+  <input class="input-field" type="text" id="name" name="name" required>
+  <p></p>
+  <br>
+  
+  <label for="email">Email:</label>
+  <input class="input-field" type="email" id="email" name="email" required>
+  <p></p>
+  <br>
+  <label for="message">Feedback:</label>
+  <textarea placeholder="Feedback....." id="message" name="message" rows="10" cols="100" required></textarea>
+  <p></p>
+  <br>  
+  <button class="add-to-cart" type="submit-form">Submit</button>
   </form>
-<br>
-</hr>
-
-
-
-
-
-</form>
+  
 
 
 
@@ -97,5 +118,17 @@
 
 
 
-<marquee><h2>This site is built by master OBI ANI DAVID. The master of this website at just 10 years old. All rights reserved</marquee>
+<script src="main.js"></script>
+
+
+
+<div  class="footer">
+    <fieldset  class="footer-fieldset">
+        <legend  class="footer-legend"></legend>
+
+        <h2 style="margin-left: 0px;" class="footer-button">2024 Maverick Links LTD, All Rights Reserved</h2>
+    </fieldset>
+
+</div>
+
 </body></h2>
