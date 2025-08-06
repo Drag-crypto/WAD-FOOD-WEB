@@ -1,50 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Audiowide', sans-serif;
+  background: url('background.png') no-repeat center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  background: rgba(100, 139, 139, 0.5);
+  padding: 40px;
+  border-radius: 10px;
+  width: 320px;
+  max-width: 90vw;
+  text-align: center;
+  color: #fff;
+}
+.card img {
+  width: 100px;
+  margin-bottom: 20px;
+  max-width: 25vw;
+}
+input {
+  font-family: 'Audiowide', sans-serif;
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+::placeholder {
+  font-family: 'Audiowide', sans-serif;
+  color: #ff7a00;
+}
+button {
+  font-family: 'Audiowide', sans-serif;
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border: 2px solid #ff7a00;
+  border-radius: 5px;
+  background: transparent;
+  color: #ff7a00;
+  cursor: pointer;
+  transition: background 0.7s, color 0.7s;
+  font-size: 1rem;
+}
+button:hover {
+  background: #00ffff;
+  color: #000;
+}
+@media (max-width: 600px) {
+  .card {
+    width: 90vw;
+    padding: 20px;
+  }
+  .card img {
+    width: 80px;
+    margin-bottom: 15px;
+  }
+  input, button {
+    font-size: 1.1rem;
+  }
+}
+</style>
 </head>
 <body>
-    <div class="header-buttons">
-        
-        <fieldset>
-            <legend></legend>
-            
-            <img style="float: left; margin-right: 10px; margin-bottom: 0px;" class="logo-image" src="logo.png"alt="food image" width="200" >
-            <h2> <button style="float: left" class="header-button" onclick="goHome()">Home</button></h2>
-            
-            <h2><button style="float: left; align-content: center;" class="header-button" onclick="goToSnack()" >Snack Menu</button></h2>
-            <h2> <button style="float: left" class="header-button" onclick="goToSoup()" >Soups Menu</button></h2>   
-            <h2><button style="float: left" class="go-to-cart" onclick="goToCart()"><img style src="Cart.png" width="50" height="50">
-            <span id="cart-count">0</span></button>  </h2>
-        </div>
-      </fieldset>
+  <div class="card">
+    <img src="logo2.png" alt="logo" />
+    <h2>Login</h2>
+    <input type="email" placeholder="Email" />
+    <input type="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <button onclick="Register()">Register</button>
+    <button onclick="Forgot()">Forgot Password</button>
+    <button onclick="phonerec()">Login with Phone</button>
+  </div>
 
-      <p onclick="goToCart()">Click here to login into the screening page</p>
+  <script>
+    function Register(){
+    window.location.href = `regist.html`
+}
 
-<div class="form_container">
-      <form class="login">
-          <label for="username"></label>
-          <input type="text">
-          <input type="submit">
-      </form>
-    </div>
-      <script src="login.js"></script>
-      <script>
-          function goToCart(){
-              window.location.href = "Cart.html"
-          }
+function Forgot(){
+    window.location.href = `forgot.html`
+}
 
-          document.querySelector('.contact-me-form').addEventListener('submit-form', function(event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-})
-
-
-          
-      </script>
+function phonerec(){
+  window.location.href = `login-phone.html`
+}
+  </script>
 </body>
 </html>
