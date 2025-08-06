@@ -152,7 +152,7 @@ function checkout() {
 
     if (confirmation) {
         alert("Proceeding to checkout!");
-        window.location.href = "note.html";
+        window.location.href = "Note.html";
         loadCartItems();
         
         
@@ -173,6 +173,7 @@ function checkout() {
 
 
 document.addEventListener('DOMContentLoaded', loadCartItems, setTimeout(() => console.log(`You can change digits in the Elements tab for education purposes, but it won't change the cart Items and specfications. It may seem like some ordinary website, but is encrypted alongside`)), 1000  )
+
 
 
 
