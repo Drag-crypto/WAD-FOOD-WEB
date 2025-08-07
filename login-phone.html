@@ -1,69 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login with Phone</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
-body, html {
-  height: 100%;
-  margin: 0;
-  font-family: 'Audiowide', sans-serif;
-  background: url('background.jpg') no-repeat center/cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.card {
-  background: rgba(0,0,0,0.6);
-  padding: 40px;
-  border-radius: 10px;
-  width: 320px;
-  max-width: 90vw;
-  text-align: center;
-  color: #fff;
-}
-.card img {
-  width: 100px;
-  margin-bottom: 20px;
-}
-select, input {
-  font-family: 'Audiowide', sans-serif;
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 5px;
-}
-button {
-  font-family: 'Audiowide', sans-serif;
-  padding: 8px;
-  border: 2px solid #ff7a00;
-  border-radius: 5px;
-  background: transparent;
-  color: #ff7a00;
-  cursor: pointer;
-  width:100%;
-  transition: background 0.7s, color 0.7s;
-}
-button:hover { background:#00ffff; color:#000; }
-.flex-buttons { display:flex; gap:40px; justify-content:center; margin-top:10px;}
-.flex-buttons button{width:50%}
-@media (max-width:600px){
-  .card{width:90vw;padding:20px;}
-  .card img{width:80px;margin-bottom:15px;}
-  input,select,button{font-size:1.1rem;}
-  .flex-buttons{flex-wrap:wrap;gap:15px;}
-  .flex-buttons button{width:100%;}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login with Phone</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Audiowide', sans-serif;
+      background: url('background.jpg') no-repeat center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background: rgba(0,0,0,0.6);
+      padding: 40px;
+      border-radius: 10px;
+      width: 320px;
+      max-width: 90vw;
+      text-align: center;
+      color: #fff;
+    }
+    .card img {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    select, input {
+      font-family: 'Audiowide', sans-serif;
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      font-family: 'Audiowide', sans-serif;
+      padding: 8px;
+      border: 2px solid #ff7a00;
+      border-radius: 5px;
+      background: transparent;
+      color: #ff7a00;
+      cursor: pointer;
+      width:100%;
+      transition: background 0.7s, color 0.7s;
+    }
+    button:hover { 
+      background:#00ffff; 
+      color:#000; 
+    }
+    .flex-buttons { 
+      display:flex; 
+      gap:40px; 
+      justify-content:center; 
+      margin-top:10px;
+    }
+    .flex-buttons button { width:50% }
+    #otpModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    #otpModal > div {
+      background: #222;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+    #otpCode {
+      font-size: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.5rem;
+      width: 80%;
+      margin: 1rem auto;
+    }
+    #otpStatus {
+      color: #00ffff;
+      margin-top: 1rem;
+    }
+    @media (max-width:600px){
+      .card { width:90vw; padding:20px; }
+      .card img { width:80px; margin-bottom:15px; }
+      input, select, button { font-size:1.1rem; }
+      .flex-buttons { flex-wrap:wrap; gap:15px; }
+      .flex-buttons button { width:100%; }
+    }
+  </style>
 </head>
 <body>
   <div class="card">
-    <img src="logo2.png" alt="logo"/>
+    <img src="logo2.png" alt="logo">
     <h2>Login with Phone</h2>
-
     <select id="countryCode">
       <option value="+234">🇳🇬 +234 Nigeria</option>
       <option value="+1">🇺🇸 +1 USA</option>
@@ -86,64 +122,30 @@ button:hover { background:#00ffff; color:#000; }
       <option value="+966">🇸🇦 +966 Saudi Arabia</option>
       <option value="+970">🇵🇸 +970 Palestine</option>
     </select>
-
-    <input type="tel" id="phone" placeholder="Phone Number"/>
-
+    <input type="tel" id="phone" placeholder="Phone Number">
     <div class="flex-buttons">
       <button onclick="sendOTP()">Send OTP</button>
       <button onclick="goback()">Go back</button>
-     
     </div>
-
-    <!-- required by Firebase reCAPTCHA -->
-    <div id="recaptcha-container"></div>
+    <div id="statusMessage" style="color:#00ffff; margin-top:10px;"></div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-  <script>
-    function goback(){
-        window.location.href = `login.html`
-    }
+  <!-- OTP Verification Modal -->
+  <div id="otpModal">
+    <div>
+      <h3>Enter Verification Code</h3>
+      <p>We sent a 6-digit code to your phone</p>
+      <input type="text" id="otpCode" placeholder="______" maxlength="6" pattern="\d{6}">
+      <button onclick="verifyOTP()">Verify</button>
+      <p id="otpStatus"></p>
+    </div>
+  </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBgt6mNbmgXxKHtZBQY3sTYaJA3Gc7b8sc",
-      authDomain: "foodies-web-database.firebaseapp.com",
-      projectId: "foodies-web-database",
-      storageBucket: "foodies-web-database.firebasestorage.app",
-      messagingSenderId: "1076733275778",
-      appId: "1:1076733275778:web:1f707bdf8b8039752a4e9b"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    let confirmationResult;
-
-    function sendOTP(){
-      const phone = document.getElementById('phone').value;
-      const cc    = document.getElementById('countryCode').value;
-      const full  = cc + phone;
-
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-        'recaptcha-container',
-        { size: 'invisible' }
-      );
-
-      auth.signInWithPhoneNumber(full, window.recaptchaVerifier)
-        .then((result) => {
-          confirmationResult = result;
-          const code = prompt("OTP sent! Enter the verification code:");
-          return confirmationResult.confirm(code);
-        })
-        .then(() => {
-          alert("Logged in successfully");
-          window.location.href = "index.html";
-        })
-        .catch((e)=>{
-          console.error(e);
-          alert("Error: "+e.message);
-        });
-    }
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="login-phone.js">
+    // Initialize Supabase
+   
   </script>
 </body>
 </html>
