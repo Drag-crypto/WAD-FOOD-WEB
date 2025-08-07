@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Email Login</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Audiowide', sans-serif;
+      background: url('background.png') no-repeat center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background: rgba(100, 139, 139, 0.5);
+      padding: 40px;
+      border-radius: 10px;
+      width: 320px;
+      max-width: 90vw;
+      text-align: center;
+      color: #fff;
+    }
+    .card img {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    input {
+      font-family: 'Audiowide', sans-serif;
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    ::placeholder {
+      font-family: 'Audiowide', sans-serif;
+      color: #ff7a00;
+    }
+    button {
+      font-family: 'Audiowide', sans-serif;
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 2px solid #ff7a00;
+      border-radius: 5px;
+      background: transparent;
+      color: #ff7a00;
+      cursor: pointer;
+      transition: background 0.7s, color 0.7s;
+    }
+    button:hover {
+      background: #00ffff;
+      color: #000;
+    }
+    #statusMessage {
+      color: #00ffff;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+    .link-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .link-buttons a {
+      flex: 1;
+      text-align: center;
+      color: #ff7a00;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="logo2.png" alt="logo">
+    <h2>Email Login</h2>
+    <input id="email" type="email" placeholder="Email Address" required>
+    <input id="password" type="password" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+    <div id="statusMessage"></div>
+    
+    <div class="link-buttons">
+      <a href="regist.html">Create Account</a>
+      <a href="forgot.html">Forgot Password?</a>
+      <a href="login-phone.html">Use Phone Instead</a>
+    </div>
+  </div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="login-email.js">
+    // Initialize Supabase
+    
+  </script>
+</body>
+</html>
