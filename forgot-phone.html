@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Forgot Password</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 body,html{
   height:100%;
   margin:0;
@@ -58,7 +58,7 @@ select,input{
   <img src="assets/img/logo.png" alt="logo">
   <h2>Forgot Password (Phone)</h2>
   <select id="code">
-   <option value="+234">🇳🇬 +234 Nigeria</option>
+     <option value="+234">🇳🇬 +234 Nigeria</option>
       <option value="+1">🇺🇸 +1 USA</option>
       <option value="+44">🇬🇧 +44 UK</option>
       <option value="+27">🇿🇦 +27 South Africa</option>
@@ -82,56 +82,19 @@ select,input{
   <input id="phone" placeholder="Phone Number" />
   
   <div class="flex-buttons">
-     <button onclick="sendLoginOTP()">Login via OTP</button>
-     <button onclick="sendResetOTP()">Reset Password OTP</button>
+    <button onclick="sendLoginOTP()">Login via OTP</button>
+    <button onclick="sendResetOTP()">Reset Password OTP</button>
   </div>
 
   <button onclick="window.location.href='forgot.html'" style="margin-top:12px;padding:8px;border:2px solid #ff7a00;border-radius:5px;background:transparent;color:#ff7a00;width:100%;cursor:pointer;">Go back</button>
-
-  <div id="recaptcha-container"></div>
 </div>
 
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBgt6mNbmgXxKHtZBQY3sTYaJA3Gc7b8sc",
-  authDomain: "foodies-web-database.firebaseapp.com",
-  projectId: "foodies-web-database",
-  storageBucket: "foodies-web-database.firebasestorage.app",
-  messagingSenderId: "1076733275778",
-  appId: "1:1076733275778:web:1f707bdf8b8039752a4e9b"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+<script src="forgot.js">
+// Initialize Supabase
 
-// Send OTP for LOGIN
-function sendLoginOTP(){
-  const phone = document.getElementById('code').value + document.getElementById('phone').value;
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container',{size:'invisible'});
-  auth.signInWithPhoneNumber(phone, recaptchaVerifier).then((result)=>{
-      const code = prompt("Enter OTP:");
-      return result.confirm(code);
-  }).then(()=>{
-     alert("Logged In Successfully");
-     window.location.href="index.html";
-  }).catch(e=>alert(e.message));
-}
-
-// Send OTP for PASSWORD RESET
-function sendResetOTP(){
-  const phone = document.getElementById('code').value + document.getElementById('phone').value;
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container',{size:'invisible'});
-  auth.signInWithPhoneNumber(phone, recaptchaVerifier).then((result)=>{
-      const code = prompt("Enter OTP:");
-      return result.confirm(code);
-  }).then(()=>{
-     alert("Verified — proceed to reset");
-     window.location.href="reset-password-phone.html";
-  }).catch(e=>alert(e.message));
-}
 </script>
 </body>
 </html>
