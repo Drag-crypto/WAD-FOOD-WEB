@@ -1,7 +1,7 @@
 // Initialize Supabase (USE YOUR CREDENTIALS)
 const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 // Check for token when page loads
 window.onload = async function() {
@@ -37,14 +37,14 @@ async function resetPassword() {
     const refresh_token = params.get('refresh_token');
 
     // 2. Recover session
-    const { data, error: sessionError } = await supabase.auth.setSession({
+    const { data, error: sessionError } = await supabaseClient.auth.setSession({
       access_token,
       refresh_token
     });
     if (sessionError) throw sessionError;
 
     // 3. Update password
-    const { error: updateError } = await supabase.auth.updateUser({
+    const { error: updateError } = await supabaseClient.auth.updateUser({
       password: newPassword
     });
     if (updateError) throw updateError;
@@ -61,3 +61,4 @@ async function resetPassword() {
 document.getElementById('confirmPassword').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') resetPassword();
 });
+
