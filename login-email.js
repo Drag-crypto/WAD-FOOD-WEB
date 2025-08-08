@@ -34,6 +34,13 @@ async function login() {
       if (e.key === 'Enter') login();
     });
 
+// Check if coming from registration
+if (window.location.search.includes('from_registration=1')) {
+  document.getElementById('email').value = localStorage.getItem('temp_reg_email') || '';
+  localStorage.removeItem('temp_reg_email');
+}
+
+
 
 
 
