@@ -10,6 +10,8 @@
     <link rel="icon" href="logo2.png">
 
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 
@@ -36,6 +38,7 @@
                     href="Contact me.html">Contact Me</button></h2>
             <button class="go-to-cart" onclick="goToCart()"><img class="image1" style="float:left" src="Cart.png"
                     width="50" height="50">
+                <button class="header-button" onclick="logout()" style="float: right;">Logout</button>
                 <span id="cart-count">0</span></button>
     </div>
 
@@ -212,7 +215,26 @@
 
 
     </div>
+        <script>
+             const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
+        const supabaseKey = 'your-supabase-key';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+        // Auth functions
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.href = 'login-email.html';
+            }
+        }
+        
+        async function logout() {
+            const { error } = await supabase.auth.signOut();
+            window.location.href = 'login-email.html';
+        }
+
+        checkAuth();
+        </script>
 
 
     <script src="main.js"></script>
@@ -232,5 +254,6 @@
 
     </div>
 </body>
+
 
 </html>
