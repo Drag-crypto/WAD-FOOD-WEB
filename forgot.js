@@ -7,7 +7,7 @@ async function sendLoginOTP(){
   const phone = document.getElementById('code').value + document.getElementById('phone').value;
 
   try {
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { data, error } = await supabaseClient.auth.signInWithOtp({
       phone: phone
     });
 
@@ -15,7 +15,7 @@ async function sendLoginOTP(){
     
     const code = prompt("Enter OTP:");
     
-    const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
+    const { data: verifyData, error: verifyError } = await supabaseClient.auth.verifyOtp({
       phone: phone,
       token: code,
       type: 'sms'
@@ -35,7 +35,7 @@ async function sendResetOTP(){
   const phone = document.getElementById('code').value + document.getElementById('phone').value;
 
   try {
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { data, error } = await supabaseClient.auth.signInWithOtp({
       phone: phone
     });
 
@@ -43,7 +43,7 @@ async function sendResetOTP(){
     
     const code = prompt("Enter OTP:");
     
-    const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
+    const { data: verifyData, error: verifyError } = await supabaseClient.auth.verifyOtp({
       phone: phone,
       token: code,
       type: 'sms'
@@ -58,3 +58,4 @@ async function sendResetOTP(){
   }
 
 }
+
