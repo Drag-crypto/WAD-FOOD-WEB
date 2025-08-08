@@ -180,3 +180,6 @@ async function verifyOTP() {
 document.getElementById("otpCode").addEventListener('keypress', (e) => {
   if (e.key === 'Enter') verifyOTP();
 });
+
+document.getElementById("confirmPassword").addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') createAccount();
