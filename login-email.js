@@ -23,7 +23,7 @@ async function login() {
         setTimeout(() => window.location.href = "/dashboard.html", 1000);
         
       } catch (error) {
-        messageEl.textContent = error.message;
+       
         messageEl.className = "error";
         messageEl.style.display = "block";
       }
@@ -33,6 +33,7 @@ async function login() {
     document.getElementById("password").addEventListener('keypress', (e) => {
       if (e.key === 'Enter') login();
     });
+
 
 
 
