@@ -5,7 +5,7 @@
     let verificationPhone = "";
 
     function goback() {
-      window.location.href = 'login.html';
+      window.location.href = 'login-email.html';
     }
 
     async function sendOTP() {
@@ -69,4 +69,5 @@
       if (e.key === 'Enter') verifyOTP();
 
     });
+
 
