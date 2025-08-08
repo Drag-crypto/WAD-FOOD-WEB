@@ -94,6 +94,13 @@
       min-height: 1.5rem;
       color: #00ffff;
     }
+    .password-hint {
+      font-size: 0.8rem;
+      color: #00ffff;
+      text-align: left;
+      margin-top: -5px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -101,11 +108,12 @@
     <img src="assets/img/logo.png" alt="logo">
     <h2>Register</h2>
     <input id="username" placeholder="Username" required>
-    <input id="email" placeholder="Email Address" required>
-    <input id="confirmEmail" placeholder="Confirm Email Address" required>
+    <input id="email" type="email" placeholder="Email Address" required>
+    <input id="confirmEmail" type="email" placeholder="Confirm Email Address" required>
     
     <input id="phone" placeholder="Phone Number (e.g., +1234567890)" required>
-    <input id="password" type="password" placeholder="Password" required>
+    <input id="password" type="password" placeholder="Password (min 6 characters)" required>
+    <p class="password-hint">Password must be at least 6 characters</p>
     <input id="confirmPassword" type="password" placeholder="Confirm Password" required>
     <div class="flex-buttons">
       <button onclick="createAccount()">Create Account</button>
@@ -119,6 +127,7 @@
     <div>
       <h3>Verify Phone</h3>
       <p>Enter the 6-digit code sent to your phone</p>
+      <p style="font-size: 0.9rem; color: #ff7a00;">(Check your email for verification link too)</p>
       <input type="text" id="otpCode" placeholder="______" maxlength="6" pattern="\d{6}">
       <button onclick="verifyOTP()">Verify</button>
       <p id="otpStatus"></p>
@@ -127,9 +136,6 @@
 
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="regist.js">
-    // Initialize Supabase
-    
-  </script>
+  <script src="regist.js"></script>
 </body>
 </html>
