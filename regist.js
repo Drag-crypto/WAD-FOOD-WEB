@@ -1,6 +1,6 @@
 const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 let verificationPhone = "";
 let registeredEmail = "";
@@ -47,7 +47,7 @@ async function createAccount() {
   statusEl.textContent = "Checking availability...";
   try {
     // Check username
-    const { data: usernameCheck, error: usernameError } = await supabase
+    const { data: usernameCheck, error: usernameError } = await supabaseClient
       .from('profiles')
       .select('username')
       .eq('username', username)
@@ -59,7 +59,7 @@ async function createAccount() {
     }
 
     // Check email
-    const { data: emailCheck, error: emailError } = await supabase
+    const { data: emailCheck, error: emailError } = await supabaseClient
       .from('profiles')
       .select('email')
       .eq('email', email)
@@ -71,7 +71,7 @@ async function createAccount() {
     }
 
     // Check phone
-    const { data: phoneCheck, error: phoneError } = await supabase
+    const { data: phoneCheck, error: phoneError } = await supabaseClient
       .from('profiles')
       .select('phone')
       .eq('phone', phone)
@@ -91,7 +91,7 @@ async function createAccount() {
   
   try {
     // 1. Register with email/password
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error } = await supabaseClient.auth.signUp({
       email,
       password,
       options: {
@@ -109,7 +109,7 @@ async function createAccount() {
     registeredEmail = email;
     
     // 2. Send verification email
-    const { error: emailError } = await supabase.auth.resend({
+    const { error: emailError } = await supabaseClient.auth.resend({
       type: 'signup',
       email: email
     });
@@ -120,7 +120,7 @@ async function createAccount() {
     statusEl.textContent = "Sending verification code...";
     verificationPhone = phone;
     
-    const { error: otpError } = await supabase.auth.signInWithOtp({
+    const { error: otpError } = await supabaseClient.auth.signInWithOtp({
       phone
     });
 
@@ -152,7 +152,7 @@ async function verifyOTP() {
   
   try {
     // 1. Verify phone via OTP
-    const { data, error } = await supabase.auth.verifyOtp({
+    const { data, error } = await supabaseClient.auth.verifyOtp({
       phone: verificationPhone,
       token: otp,
       type: 'sms'
@@ -161,7 +161,7 @@ async function verifyOTP() {
     if (error) throw error;
 
     // 2. Auto-login with email/password (since we have them)
-    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+    const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({
       email: registeredEmail,
       password: document.getElementById("password").value
     });
