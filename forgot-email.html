@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Forgot Password</title>
-  <link rel="icon" href = "logo2.png">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
     body, html {
@@ -37,6 +35,10 @@
       margin: 8px 0;
       border: none;
       border-radius: 5px;
+    }
+    ::placeholder {
+      font-family: 'Audiowide', sans-serif;
+      color: #ff7a00;
     }
     button {
       font-family: 'Audiowide', sans-serif;
@@ -87,10 +89,7 @@
   </div>
 
   <!-- Supabase SDK -->
-  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="forgot-email.js"></script>
 </body>
 </html>
-
-
-
