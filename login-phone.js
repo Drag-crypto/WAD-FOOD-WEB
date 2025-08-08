@@ -23,7 +23,7 @@
       verificationPhone = fullPhone;
 
       try {
-        const { error } = await supabase.auth.signInWithOtp({
+        const { error } = await supabaseClient.auth.signInWithOtp({
           phone: fullPhone
         });
 
@@ -49,7 +49,7 @@
       statusEl.textContent = "Verifying...";
 
       try {
-        const { error } = await supabase.auth.verifyOtp({
+        const { error } = await supabaseClient.auth.verifyOtp({
           phone: verificationPhone,
           token: otp,
           type: 'sms'
@@ -69,3 +69,4 @@
       if (e.key === 'Enter') verifyOTP();
 
     });
+
