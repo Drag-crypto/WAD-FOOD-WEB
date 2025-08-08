@@ -1,6 +1,6 @@
 const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
     async function sendResetEmail() {
       const email = document.getElementById("email").value;
@@ -30,4 +30,5 @@ const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
     // Allow pressing Enter to submit
     document.getElementById("email").addEventListener('keypress', (e) => {
       if (e.key === 'Enter') sendResetEmail();
+
     });
