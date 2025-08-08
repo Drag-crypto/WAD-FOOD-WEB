@@ -8,7 +8,7 @@ async function login() {
       const messageEl = document.getElementById('message');
 
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
           email: email,
           password: password
         });
@@ -20,7 +20,7 @@ async function login() {
         messageEl.style.display = "block";
         
         // Redirect after 1 second
-        setTimeout(() => window.location.href = "/dashboard.html", 1000);
+        setTimeout(() => window.location.href = "/index.html", 1000);
         
       } catch (error) {
        
@@ -33,6 +33,7 @@ async function login() {
     document.getElementById("password").addEventListener('keypress', (e) => {
       if (e.key === 'Enter') login();
     });
+
 
 
 
