@@ -144,6 +144,8 @@ async function verifyOTP() {
   if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) {
     statusEl.textContent = "Please enter a valid 6-digit code";
     return;
+
+    localStorage.setItem('temp_reg_email', registeredEmail);
   }
 
   statusEl.textContent = "Verifying...";
