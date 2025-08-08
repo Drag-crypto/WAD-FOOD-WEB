@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Email Verified</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Audiowide', sans-serif;
+      background: url('background.png') no-repeat center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+    }
+    .card {
+      background: rgba(0,0,0,0.7);
+      padding: 40px;
+      border-radius: 10px;
+      max-width: 90vw;
+      width: 400px;
+    }
+    .checkmark {
+      color: #00ff00;
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="checkmark">✓</div>
+    <h2>Email Verified Successfully!</h2>
+    <p>Your email address has been confirmed.</p>
+    <p>You can now enjoy full access to your account.</p>
+    <button onclick="window.location.href='index.html'" 
+            style="margin-top:20px; padding:10px; background:#00ffff; border:none; border-radius:5px; cursor:pointer;">
+      Continue to Dashboard
+    </button>
+  </div>
+</body>
+</html>
