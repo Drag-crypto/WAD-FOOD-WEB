@@ -34,7 +34,7 @@ const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
       
       try {
         // 1. Register with email/password
-        const { data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabaseClient.auth.signUp({
           email,
           password,
           options: {
@@ -52,7 +52,7 @@ const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
         statusEl.textContent = "Sending verification code...";
         verificationPhone = phone;
         
-        const { error: otpError } = await supabase.auth.signInWithOtp({
+        const { error: otpError } = await supabaseClient.auth.signInWithOtp({
           phone
         });
 
@@ -81,7 +81,7 @@ const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
       statusEl.textContent = "Verifying...";
       
       try {
-        const { error } = await supabase.auth.verifyOtp({
+        const { error } = await supabaseClient.auth.verifyOtp({
           phone: verificationPhone,
           token: otp,
           type: 'sms'
