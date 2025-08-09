@@ -15,21 +15,17 @@ async function sendResetLink() {
 
   try {
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/Reset-Password-email.html`
+      redirectTo: `${window.location.origin}/reset-password-email.html`
     });
 
     if (error) throw error;
 
-    statusEl.textContent = "Reset link sent! Check your email.";
-   
-    
+    statusEl.textContent = "Reset link sent to your email!";
   } catch (error) {
     statusEl.textContent = error.message;
   }
 }
 
-// Allow pressing Enter to submit
 document.getElementById("email").addEventListener('keypress', (e) => {
   if (e.key === 'Enter') sendResetLink();
 });
-
