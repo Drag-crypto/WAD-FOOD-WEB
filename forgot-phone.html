@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Forgot Password (Phone)</title>
-  <link rel="icon" href="logo2.png">
+  <title>Login with Phone</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
@@ -12,7 +11,7 @@
       height: 100%;
       margin: 0;
       font-family: 'Audiowide', sans-serif;
-      background: url('background.png') no-repeat center/cover;
+      background: url('background.jpg') no-repeat center/cover;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -40,35 +39,40 @@
     }
     button {
       font-family: 'Audiowide', sans-serif;
-      width: 100%;
       padding: 8px;
-      margin: 10px 0;
       border: 2px solid #ff7a00;
       border-radius: 5px;
       background: transparent;
       color: #ff7a00;
       cursor: pointer;
+      width:100%;
       transition: background 0.7s, color 0.7s;
     }
-    button:hover {
-      background: #00ffff;
+    button:hover { 
+      background:#00ffff; 
+      color:#000; 
+    }
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    .tab-button {
+      flex: 1;
+      padding: 10px;
+      background: rgba(0,0,0,0.3);
+      border: none;
+      color: #ff7a00;
+      cursor: pointer;
+    }
+    .tab-button.active {
+      background: #ff7a00;
       color: #000;
     }
-    #statusMessage {
-      color: #00ffff;
-      margin-top: 10px;
-      min-height: 20px;
+    .tab-content {
+      display: none;
     }
-    .link-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .link-buttons a {
-      flex: 1;
-      text-align: center;
-      color: #ff7a00;
-      text-decoration: none;
+    .tab-content.active {
+      display: block;
     }
     #otpModal {
       display: none;
@@ -101,43 +105,70 @@
       color: #00ffff;
       margin-top: 1rem;
     }
+    .link-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .link-buttons a {
+      flex: 1;
+      text-align: center;
+      color: #ff7a00;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <img src="assets/img/logo.png" alt="logo">
-    <h2>Reset Password (Phone)</h2>
-    <select id="countryCode">
-      <option value="+234">🇳🇬 +234 Nigeria</option>
-      <option value="+1">🇺🇸 +1 USA</option>
-      <option value="+44">🇬🇧 +44 UK</option>
-      <!-- Other country options -->
-    </select>
-    <input type="tel" id="phone" placeholder="Your registered phone number" required>
-    <button onclick="sendOTP()">Send Verification Code</button>
-    <div id="statusMessage"></div>
+    <img src="logo2.png" alt="logo">
+    <h2>Phone Login</h2>
+    
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="switchTab('password')">Password</button>
+      <button class="tab-button" onclick="switchTab('otp')">OTP Code</button>
+    </div>
+    
+    <div id="password-tab" class="tab-content active">
+      <select id="countryCode">
+        <option value="+234">🇳🇬 +234 Nigeria</option>
+        <option value="+1">🇺🇸 +1 USA</option>
+        <option value="+44">🇬🇧 +44 UK</option>
+      </select>
+      <input type="tel" id="phone" placeholder="Your phone number">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="loginWithPassword()">Login</button>
+      <div id="passwordStatus" style="color:#00ffff; margin-top:10px;"></div>
+    </div>
+    
+    <div id="otp-tab" class="tab-content">
+      <select id="otpCountryCode">
+        <option value="+234">🇳🇬 +234 Nigeria</option>
+        <option value="+1">🇺🇸 +1 USA</option>
+        <option value="+44">🇬🇧 +44 UK</option>
+      </select>
+      <input type="tel" id="otpPhone" placeholder="Your phone number">
+      <button onclick="sendLoginOTP()">Send OTP</button>
+      <div id="otpSendStatus" style="color:#00ffff; margin-top:10px;"></div>
+    </div>
     
     <div class="link-buttons">
-      <a href="login-phone.html">Back to Login</a>
-      <a href="forgot-email.html">Use Email Instead</a>
+      <a href="login-email.html">Use Email Instead</a>
+      <a href="forgot.html">Forgot Password?</a>
     </div>
   </div>
 
-  <!-- OTP Verification + New Password Modal -->
+  <!-- OTP Verification Modal -->
   <div id="otpModal">
     <div>
-      <h3>Reset Password</h3>
-      <p>Enter the 6-digit code sent to your phone</p>
-      <input type="text" id="otpCode" placeholder="______" maxlength="6" pattern="\d{6}">
-      <input type="password" id="newPassword" placeholder="New Password" style="margin-top:10px;">
-      <input type="password" id="confirmPassword" placeholder="Confirm Password">
-      <button onclick="verifyAndReset()" style="margin-top:15px;">Reset Password</button>
+      <h3>Enter Verification Code</h3>
+      <p>We sent a 6-digit code to your phone</p>
+      <input type="text" id="otpCode" placeholder="______" maxlength="6">
+      <button onclick="verifyOTP()">Verify</button>
       <p id="otpStatus"></p>
     </div>
   </div>
 
-  <!-- Supabase SDK -->
   
-  <script src="forgot.js"></script>
+  <script src="login-phone.js"></script>
 </body>
 </html>
