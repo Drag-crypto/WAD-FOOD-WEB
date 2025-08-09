@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login with Phone</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>Reset Password (Phone)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
     body, html {
       height: 100%;
       margin: 0;
       font-family: 'Audiowide', sans-serif;
-      background: url('background.jpg') no-repeat center/cover;
+      background: url('background.png') no-repeat center/cover;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -52,27 +51,10 @@
       background:#00ffff; 
       color:#000; 
     }
-    .tab-buttons {
-      display: flex;
-      margin-bottom: 20px;
-    }
-    .tab-button {
-      flex: 1;
-      padding: 10px;
-      background: rgba(0,0,0,0.3);
-      border: none;
-      color: #ff7a00;
-      cursor: pointer;
-    }
-    .tab-button.active {
-      background: #ff7a00;
-      color: #000;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
+    #statusMessage {
+      color: #00ffff;
+      margin-top: 10px;
+      min-height: 20px;
     }
     #otpModal {
       display: none;
@@ -92,6 +74,7 @@
       border-radius: 10px;
       text-align: center;
       width: 300px;
+      max-width: 90vw;
     }
     #otpCode {
       font-size: 1.5rem;
@@ -116,59 +99,53 @@
       color: #ff7a00;
       text-decoration: none;
     }
+    .optional-note {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: -5px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <img src="logo2.png" alt="logo">
-    <h2>Phone Login</h2>
+    <h2>Reset Password</h2>
+    <p class="optional-note">Enter your registered phone number</p>
     
-    <div class="tab-buttons">
-      <button class="tab-button active" onclick="switchTab('password')">Password</button>
-      <button class="tab-button" onclick="switchTab('otp')">OTP Code</button>
-    </div>
+    <select id="countryCode">
+      <option value="+234">🇳🇬 +234 Nigeria</option>
+      <option value="+1">🇺🇸 +1 USA</option>
+      <option value="+44">🇬🇧 +44 UK</option>
+      <option value="+233">🇬🇭 +233 Ghana</option>
+      <option value="+254">🇰🇪 +254 Kenya</option>
+    </select>
     
-    <div id="password-tab" class="tab-content active">
-      <select id="countryCode">
-        <option value="+234">🇳🇬 +234 Nigeria</option>
-        <option value="+1">🇺🇸 +1 USA</option>
-        <option value="+44">🇬🇧 +44 UK</option>
-      </select>
-      <input type="tel" id="phone" placeholder="Your phone number">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="loginWithPassword()">Login</button>
-      <div id="passwordStatus" style="color:#00ffff; margin-top:10px;"></div>
-    </div>
-    
-    <div id="otp-tab" class="tab-content">
-      <select id="otpCountryCode">
-        <option value="+234">🇳🇬 +234 Nigeria</option>
-        <option value="+1">🇺🇸 +1 USA</option>
-        <option value="+44">🇬🇧 +44 UK</option>
-      </select>
-      <input type="tel" id="otpPhone" placeholder="Your phone number">
-      <button onclick="sendLoginOTP()">Send OTP</button>
-      <div id="otpSendStatus" style="color:#00ffff; margin-top:10px;"></div>
-    </div>
+    <input type="tel" id="phone" placeholder="Phone number" required>
+    <button onclick="sendOTP()">Send Verification Code</button>
+    <div id="statusMessage"></div>
     
     <div class="link-buttons">
-      <a href="login-email.html">Use Email Instead</a>
-      <a href="forgot.html">Forgot Password?</a>
+      <a href="login-phone.html">Back to Login</a>
+      <a href="forgot-email.html">Use Email Instead</a>
     </div>
   </div>
 
-  <!-- OTP Verification Modal -->
+  <!-- OTP Verification + New Password Modal -->
   <div id="otpModal">
     <div>
-      <h3>Enter Verification Code</h3>
-      <p>We sent a 6-digit code to your phone</p>
-      <input type="text" id="otpCode" placeholder="______" maxlength="6">
-      <button onclick="verifyOTP()">Verify</button>
+      <h3>Reset Password</h3>
+      <p>Enter the 6-digit code sent to your phone</p>
+      <input type="text" id="otpCode" placeholder="______" maxlength="6" pattern="\d{6}">
+      <input type="password" id="newPassword" placeholder="New Password" style="margin-top:10px;">
+      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      <button onclick="verifyAndReset()" style="margin-top:15px;">Reset Password</button>
       <p id="otpStatus"></p>
     </div>
   </div>
 
-  
-  <script src="login.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="forgot.js"></script>
 </body>
 </html>
