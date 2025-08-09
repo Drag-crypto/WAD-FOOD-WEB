@@ -4,18 +4,87 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 let verificationPhone = "";
 
-async function sendOTP() {
-  const phone = document.getElementById('phone').value;
+// Tab switching
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-button').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  
+  document.querySelector(`.tab-button[onclick="switchTab('${tabName}')"]`).classList.add('active');
+  document.getElementById(`${tabName}-tab`).classList.add('active');
+}
+
+// Unified password login
+async function loginWithPassword() {
+  const identifier = document.getElementById('phone').value;
   const cc = document.getElementById('countryCode').value;
+  const password = document.getElementById('password').value;
+  const statusEl = document.getElementById('passwordStatus');
+  
+  if (!identifier || !password) {
+    statusEl.textContent = "Credentials required";
+    return;
+  }
+
+  statusEl.textContent = "Logging in...";
+  
+  try {
+    // Determine if identifier is email or phone
+    const isEmail = identifier.includes('@');
+    let credentials = { password };
+
+    if (isEmail) {
+      credentials.email = identifier;
+    } else {
+      credentials.phone = cc + identifier;
+    }
+
+    // First attempt with provided credentials
+    let { data, error } = await supabaseClient.auth.signInWithPassword(credentials);
+
+    // If fails and was phone, try finding associated email
+    if (error && !isEmail) {
+      const { data: userData } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('phone', cc + identifier)
+        .single();
+
+      if (userData?.email) {
+        ({ data, error } = await supabaseClient.auth.signInWithPassword({
+          email: userData.email,
+          password
+        }));
+      }
+    }
+
+    if (error) throw error;
+    
+    statusEl.textContent = "✓ Login successful! Redirecting...";
+    setTimeout(() => window.location.href = "index.html", 1000);
+  } catch (error) {
+    statusEl.textContent = error.message.includes("Invalid login") 
+      ? "Invalid credentials" 
+      : error.message;
+  }
+}
+
+// OTP Login
+async function sendLoginOTP() {
+  const phone = document.getElementById('otpPhone').value;
+  const cc = document.getElementById('otpCountryCode').value;
   const fullPhone = cc + phone;
-  const statusEl = document.getElementById('statusMessage');
+  const statusEl = document.getElementById('otpSendStatus');
 
   if (!phone) {
     statusEl.textContent = "Please enter phone number";
     return;
   }
 
-  statusEl.textContent = "Sending verification code...";
+  statusEl.textContent = "Sending OTP...";
   verificationPhone = fullPhone;
 
   try {
@@ -29,14 +98,14 @@ async function sendOTP() {
     document.getElementById("otpCode").focus();
     statusEl.textContent = "";
   } catch (error) {
-    statusEl.textContent = error.message;
+    statusEl.textContent = error.message.includes("not found") 
+      ? "Phone not registered" 
+      : error.message;
   }
 }
 
-async function verifyAndReset() {
+async function verifyOTP() {
   const otp = document.getElementById("otpCode").value;
-  const newPassword = document.getElementById("newPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
   const statusEl = document.getElementById("otpStatus");
 
   if (!otp || otp.length !== 6) {
@@ -44,49 +113,28 @@ async function verifyAndReset() {
     return;
   }
 
-  if (newPassword !== confirmPassword) {
-    statusEl.textContent = "Passwords don't match!";
-    return;
-  }
-
-  if (newPassword.length < 6) {
-    statusEl.textContent = "Password must be 6+ characters";
-    return;
-  }
-  alert("Are you sure this is the password you choose?")
-  statusEl.textContent = "Verifying and updating...";
+  statusEl.textContent = "Verifying...";
 
   try {
-    // 1. Verify OTP first
-    const { data, error: verifyError } = await supabaseClient.auth.verifyOtp({
+    const { error } = await supabaseClient.auth.verifyOtp({
       phone: verificationPhone,
       token: otp,
       type: 'sms'
     });
 
-    if (verifyError) throw verifyError;
+    if (error) throw error;
 
-    // 2. Update password (requires user to be logged in)
-    const { error: updateError } = await supabaseClient.auth.updateUser({
-      password: newPassword
-    });
-
-    if (updateError) throw updateError;
-
-    statusEl.textContent = "✓ Password updated! Redirecting...";
-    setTimeout(() => window.location.href = "login-phone.html", 1500);
+    statusEl.textContent = "✓ Verified! Redirecting...";
+    setTimeout(() => window.location.href = "index.html", 1000);
   } catch (error) {
     statusEl.textContent = error.message;
   }
 }
 
-// Allow pressing Enter in fields
+// Keyboard navigation
 document.getElementById("otpCode").addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') document.getElementById("newPassword").focus();
+  if (e.key === 'Enter') verifyOTP();
 });
-document.getElementById("newPassword").addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') document.getElementById("confirmPassword").focus();
-});
-document.getElementById("confirmPassword").addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') verifyAndReset();
+document.getElementById("password").addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') loginWithPassword();
 });
