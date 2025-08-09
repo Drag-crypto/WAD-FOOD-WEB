@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Register</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="logo2.png">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
@@ -58,9 +57,15 @@
       background: #00ffff;
       color: #000;
     }
-    .flex-buttons {
-      display: flex;
-      gap: 40px;
+    .optional-field {
+      position: relative;
+    }
+    .optional-badge {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 0.8rem;
+      color: #888;
     }
     /* OTP Modal Styles */
     #otpModal {
@@ -96,48 +101,43 @@
       min-height: 1.5rem;
       color: #00ffff;
     }
-    .password-hint {
-      font-size: 0.8rem;
-      color: #00ffff;
-      text-align: left;
-      margin-top: -5px;
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 <body>
   <div class="card">
-    <img src="logo2.png" alt="logo">
+    <img src="assets/img/logo.png" alt="logo">
     <h2>Register</h2>
     <input id="username" placeholder="Username" required>
     <input id="email" type="email" placeholder="Email Address" required>
     <input id="confirmEmail" type="email" placeholder="Confirm Email Address" required>
     
-    <input id="phone" placeholder="Phone Number (e.g., +1234567890)" required>
+    <div class="optional-field">
+      <input id="phone" placeholder="Phone Number (Optional)">
+      <span class="optional-badge">Optional</span>
+    </div>
+    
     <input id="password" type="password" placeholder="Password (min 6 characters)" required>
-    <p class="password-hint">Password must be at least 6 characters</p>
     <input id="confirmPassword" type="password" placeholder="Confirm Password" required>
+    
     <div class="flex-buttons">
       <button onclick="createAccount()">Create Account</button>
-      <a href="login-email.html"><button>Already have an Account</button></a>
+      <a href="login.html"><button>Already have an Account</button></a>
     </div>
     <div id="statusMessage" style="margin-top: 15px; color: #00ffff;"></div>
   </div>
 
-  <!-- OTP Verification Modal -->
+  <!-- OTP Verification Modal (only shown if phone provided) -->
   <div id="otpModal">
     <div>
       <h3>Verify Phone</h3>
       <p>Enter the 6-digit code sent to your phone</p>
-      <p style="font-size: 0.9rem; color: #ff7a00;">(Check your email for verification link too)</p>
       <input type="text" id="otpCode" placeholder="______" maxlength="6" pattern="\d{6}">
       <button onclick="verifyOTP()">Verify</button>
       <p id="otpStatus"></p>
     </div>
   </div>
 
-  <!-- Supabase SDK -->
- 
+  
   <script src="regist.js"></script>
 </body>
 </html>
