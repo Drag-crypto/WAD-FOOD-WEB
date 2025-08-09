@@ -139,5 +139,25 @@
 
   
   <script src="regist.js"></script>
+  <script>
+    const usernameInput = document.getElementById("username");
+  const usernameStatus = document.createElement("small");
+  usernameStatus.style.display = "block";
+  usernameStatus.style.color = "#00ffff";
+  usernameInput.parentNode.insertBefore(usernameStatus, usernameInput.nextSibling);
+
+  usernameInput.addEventListener('blur', async () => {
+    const username = usernameInput.value.trim();
+    if(username.length < 3) return;
+    
+    const { data } = await supabaseClient
+      .from('profiles')
+      .select('username')
+      .eq('username', username)
+      .single();
+
+    usernameStatus.textContent = data ? "❌ Username taken" : "✓ Available";
+  });
+  </script>
 </body>
 </html>
