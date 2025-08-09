@@ -21,10 +21,8 @@ async function sendResetLink() {
     if (error) throw error;
 
     statusEl.textContent = "Reset link sent! Check your email.";
-    // Redirect to reset page after a short delay (optional)
-    setTimeout(() => {
-      window.location.href = "Reset-Password-Email.html";
-    }, 3000);
+   
+    
   } catch (error) {
     statusEl.textContent = error.message;
   }
@@ -34,3 +32,4 @@ async function sendResetLink() {
 document.getElementById("email").addEventListener('keypress', (e) => {
   if (e.key === 'Enter') sendResetLink();
 });
+
