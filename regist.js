@@ -1,5 +1,5 @@
 const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
+const supabaseKey = 'your-supabase-key';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 let verificationPhone = "";
@@ -18,8 +18,8 @@ async function createAccount() {
   statusEl.textContent = "";
 
   // Validation
-  if (!username || !email || !confirmEmail || !password || !confirmPassword || !phone) {
-    statusEl.textContent = "All fields are required!";
+  if (!username || !email || !confirmEmail || !password || !confirmPassword) {
+    statusEl.textContent = "Required fields are missing!";
     return;
   }
 
@@ -33,58 +33,15 @@ async function createAccount() {
     return;
   }
 
-  if (!phone.startsWith('+')) {
-    statusEl.textContent = "Phone must include country code (e.g., +1)";
-    return;
-  }
-
   if (password.length < 6) {
     statusEl.textContent = "Password must be at least 6 characters";
     return;
   }
 
-  // Check for duplicates
-  statusEl.textContent = "Checking availability...";
-  try {
-    // Check username
-    const { data: usernameCheck, error: usernameError } = await supabaseClient
-      .from('profiles')
-      .select('username')
-      .eq('username', username)
-      .single();
-
-    if (usernameCheck) {
-      statusEl.textContent = "Username already taken";
-      return;
-    }
-
-    // Check email
-    const { data: emailCheck, error: emailError } = await supabaseClient
-      .from('profiles')
-      .select('email')
-      .eq('email', email)
-      .single();
-
-    if (emailCheck) {
-      statusEl.textContent = "Email already registered";
-      return;
-    }
-
-    // Check phone
-    const { data: phoneCheck, error: phoneError } = await supabaseClient
-      .from('profiles')
-      .select('phone')
-      .eq('phone', phone)
-      .single();
-
-    if (phoneCheck) {
-      statusEl.textContent = "Phone number already registered";
-      return;
-    }
-
-  } catch (error) {
-    console.error("Duplicate check error:", error);
-    // Continue registration if checks fail (fail-open for better UX)
+  // Phone validation only if provided
+  if (phone && !phone.startsWith('+')) {
+    statusEl.textContent = "Phone must include country code (e.g., +1)";
+    return;
   }
 
   statusEl.textContent = "Creating account...";
@@ -97,7 +54,7 @@ async function createAccount() {
       options: {
         data: {
           username,
-          phone,
+          ...(phone && { phone }), // Only include phone if provided
           email_verified: false
         },
         emailRedirectTo: `${window.location.origin}/verify-success.html`
@@ -116,20 +73,27 @@ async function createAccount() {
 
     if (emailError) console.error("Email verification error:", emailError);
 
-    // 3. Send OTP to phone
-    statusEl.textContent = "Sending verification code...";
-    verificationPhone = phone;
-    
-    const { error: otpError } = await supabaseClient.auth.signInWithOtp({
-      phone
-    });
+    // 3. If phone provided, send OTP
+    if (phone) {
+      statusEl.textContent = "Sending verification code...";
+      verificationPhone = phone;
+      
+      const { error: otpError } = await supabaseClient.auth.signInWithOtp({
+        phone
+      });
 
-    if (otpError) throw otpError;
+      if (otpError) throw otpError;
 
-    // Show OTP modal
-    document.getElementById("otpModal").style.display = "flex";
-    document.getElementById("otpCode").focus();
-    statusEl.textContent = "";
+      // Show OTP modal
+      document.getElementById("otpModal").style.display = "flex";
+      document.getElementById("otpCode").focus();
+    } else {
+      // No phone - redirect to success
+      statusEl.textContent = "Account created! Check your email to verify.";
+      setTimeout(() => {
+        window.location.href = "login-email.html";
+      }, 3000);
+    }
     
   } catch (error) {
     statusEl.textContent = `Error: ${error.message}`;
@@ -144,8 +108,6 @@ async function verifyOTP() {
   if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) {
     statusEl.textContent = "Please enter a valid 6-digit code";
     return;
-
-    localStorage.setItem('temp_reg_email', registeredEmail);
   }
 
   statusEl.textContent = "Verifying...";
@@ -160,10 +122,11 @@ async function verifyOTP() {
 
     if (error) throw error;
 
-    // 2. Auto-login with email/password (since we have them)
+    // 2. Auto-login with email/password
+    const password = document.getElementById("password").value;
     const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({
       email: registeredEmail,
-      password: document.getElementById("password").value
+      password: password
     });
 
     if (loginError) throw loginError;
@@ -176,10 +139,6 @@ async function verifyOTP() {
   }
 }
 
-// Allow pressing Enter in OTP field to submit
 document.getElementById("otpCode").addEventListener('keypress', (e) => {
   if (e.key === 'Enter') verifyOTP();
 });
-
-document.getElementById("confirmPassword").addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') createAccount();
