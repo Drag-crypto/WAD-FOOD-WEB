@@ -28,7 +28,7 @@ async function login() {
     }
     
     // Redirect after 1 second
-    setTimeout(() => window.location.href = "/index.html", 1000);
+    setTimeout(() => window.location.href = "WAD-FOOD-WEB/index.html", 1000);
     
   } catch (error) {
     if (messageEl) {
@@ -48,3 +48,4 @@ if (window.location.search.includes('from_registration=1')) {
   document.getElementById('email').value = localStorage.getItem('temp_reg_email') || '';
   localStorage.removeItem('temp_reg_email');
 }
+
