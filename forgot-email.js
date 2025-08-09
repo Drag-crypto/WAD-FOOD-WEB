@@ -15,7 +15,7 @@ async function sendResetLink() {
 
   try {
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password-email.html`
+      redirectTo: `${window.location.origin}/Reset-Password-email.html`
     });
 
     if (error) throw error;
@@ -29,3 +29,4 @@ async function sendResetLink() {
 document.getElementById("email").addEventListener('keypress', (e) => {
   if (e.key === 'Enter') sendResetLink();
 });
+
