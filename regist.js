@@ -14,6 +14,13 @@ async function createAccount() {
   const phone = document.getElementById("phone").value.trim();
   const statusEl = document.getElementById("statusMessage");
 
+   const usedUsernames = new Set();
+if (usedUsernames.has(username)) {
+  statusEl.textContent = "Username already taken";
+  return;
+}
+usedUsernames.add(username);
+
   // Clear previous errors
   statusEl.textContent = "";
 
@@ -109,6 +116,8 @@ async function verifyOTP() {
     statusEl.textContent = "Please enter a valid 6-digit code";
     return;
   }
+
+ 
 
   statusEl.textContent = "Verifying...";
   
