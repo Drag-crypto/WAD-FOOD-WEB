@@ -1,5 +1,5 @@
 const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
-const supabaseKey = 'your-supabase-key';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 let verificationPhone = "";
