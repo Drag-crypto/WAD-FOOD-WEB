@@ -77,6 +77,36 @@
     
 <script src="cart.js"></script>
 
+    <!-- Add loading overlay -->
+<div id="loading-overlay" class="cart-loading-overlay">
+  <div class="spinner"></div>
+  <p>Updating cart...</p>
+</div>
+
+<!-- Add error container -->
+<div id="cart-error-container" style="display: none;"></div>
+
+<!-- Add this to your cart item container -->
+<template id="cart-item-template">
+  <div class="cart-item">
+    <div class="item-image">
+      <img src="" alt="Product image" class="product-thumbnail">
+    </div>
+    <div class="item-details">
+      <h3 class="product-name"></h3>
+      <p class="product-price"></p>
+      <div class="quantity-control">
+        <button class="qty-decrease">-</button>
+        <span class="product-quantity"></span>
+        <button class="qty-increase">+</button>
+      </div>
+    </div>
+    <button class="remove-item">
+      <img src="trash-icon.svg" alt="Remove" width="20">
+    </button>
+  </div>
+</template>
+
 
 <br>   
  <br>
@@ -96,4 +126,7 @@
     </fieldset>
 
 </div>
+
+    
+
 </body></html>
