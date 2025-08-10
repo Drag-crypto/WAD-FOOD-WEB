@@ -4,6 +4,8 @@
 // ========================
 
 // Configuration
+
+
 const config = {
   supabaseUrl: 'https://rvlealemvurgmpflajbn.supabase.co',
   supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M',
@@ -14,6 +16,11 @@ const config = {
 
 // Initialize Supabase
 const supabaseClient = supabase.createClient(config.supabaseUrl, config.supabaseKey);
+
+if (!supabaseClient.auth.session()) {
+  console.log("Guest user - using local storage");
+  window.guestMode = true;
+}
 
 // State Management
 const cart = {
@@ -374,3 +381,4 @@ function renderEmptyState() {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', initCart);
+
