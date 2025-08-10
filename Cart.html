@@ -9,6 +9,110 @@
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="logo.png">
 
+    <style>
+    .cart-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantity-control button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  cursor: pointer;
+}
+
+.quantity-control button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Loading State */
+#loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Error State */
+.error {
+  background: #ffebee;
+  border: 1px solid #ffcdd2;
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+/* Empty State */
+.empty-cart {
+  text-align: center;
+  padding: 2rem;
+}
+
+.empty-cart img {
+  max-width: 200px;
+  margin: 0 auto 1rem;
+}
+
+/* Toast Notifications */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: white;
+  z-index: 1001;
+  animation: slideIn 0.3s ease-out;
+}
+
+.toast.success { background: #4caf50; }
+.toast.error { background: #f44336; }
+.toast.warning { background: #ff9800; }
+.toast.info { background: #2196f3; }
+
+@keyframes slideIn {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cart-item {
+    grid-template-columns: 80px 1fr;
+  }
+  
+  .item-total, .remove-item {
+    grid-column: span 2;
+  }
+}
+        
+    </style>
+
 
 </head>
 
@@ -107,6 +211,12 @@
   </div>
 </template>
 
+     <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p>Updating cart...</p>
+  </div>
+  
+
 
 <br>   
  <br>
@@ -130,3 +240,4 @@
     
 
 </body></html>
+
