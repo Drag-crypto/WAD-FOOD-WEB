@@ -44,6 +44,15 @@
 
     </fieldset>
 
+    <div id="user-details" class="user-details-container" style="display: none;">
+        <h2>Your Profile</h2>
+        <div class="user-info">
+            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+            <p><strong>Account Created:</strong> <span id="user-created">Loading...</span></p>
+        </div>
+    </div>
+
 
 
 
@@ -217,23 +226,46 @@
     </div>
         <script>
              const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
-        const supabaseKey = 'your-supabase-key';
+        const supabaseKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M'; // Replace with your actual key
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Auth functions
+        // DOM elements
+        const authButton = document.getElementById('auth-button');
+        const userDetails = document.getElementById('user-details');
+
+        // Check authentication state
         async function checkAuth() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                window.location.href = 'login-email.html';
+            const { data: { session }, error } = await supabase.auth.getSession();
+            
+            if (session) {
+                // User is logged in
+                authButton.textContent = 'Logout';
+                authButton.onclick = logout;
+                
+                // Show user details
+                userDetails.style.display = 'block';
+                document.getElementById('user-email').textContent = session.user.email;
+                
+                // Fetch additional user data if needed
+                const { data: { user } } = await supabase.auth.getUser();
+                document.getElementById('user-name').textContent = user.user_metadata?.full_name || 'Not provided';
+                document.getElementById('user-created').textContent = new Date(user.created_at).toLocaleDateString();
+            } else {
+                // User is not logged in
+                authButton.textContent = 'Login/Signup';
+                authButton.onclick = () => window.location.href = 'login-email.html';
+                userDetails.style.display = 'none';
             }
         }
-        
+
+        // Logout function
         async function logout() {
             const { error } = await supabase.auth.signOut();
             window.location.href = 'login-email.html';
         }
 
-        checkAuth();
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', checkAuth);
         </script>
 
 
@@ -257,3 +289,4 @@
 
 
 </html>
+
