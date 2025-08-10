@@ -227,7 +227,7 @@
         <script>
              const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M'; // Replace with your actual key
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         // DOM elements
         const authButton = document.getElementById('auth-button');
@@ -235,7 +235,7 @@
 
         // Check authentication state
         async function checkAuth() {
-            const { data: { session }, error } = await supabase.auth.getSession();
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
             
             if (session) {
                 // User is logged in
@@ -247,7 +247,7 @@
                 document.getElementById('user-email').textContent = session.user.email;
                 
                 // Fetch additional user data if needed
-                const { data: { user } } = await supabase.auth.getUser();
+                const { data: { user } } = await supabaseClient.auth.getUser();
                 document.getElementById('user-name').textContent = user.user_metadata?.full_name || 'Not provided';
                 document.getElementById('user-created').textContent = new Date(user.created_at).toLocaleDateString();
             } else {
@@ -260,7 +260,7 @@
 
         // Logout function
         async function logout() {
-            const { error } = await supabase.auth.signOut();
+            const { error } = await supabaseClient.auth.signOut();
             window.location.href = 'login-email.html';
         }
 
@@ -289,5 +289,6 @@
 
 
 </html>
+
 
 
