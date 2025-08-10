@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - FOODIES WEB</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: bisque;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .offline-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #dc3545;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background: #0069d9;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .connection-status {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .connection-status.online {
+            background: #28a745;
+        }
+
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 20px;
+            }
+            
+            .logo {
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <img src="logo2.png" alt="FOODIES WEB Logo" class="logo">
+        <h1>Oops! You're Offline</h1>
+        <p>We can't connect to the internet right now. Your cart items are safe and will sync when you're back online.</p>
+        <p>Try these options:</p>
+        
+        <div>
+            <button id="retry-btn" class="btn">Try Again</button>
+            <a href="index.html" class="btn btn-outline">Continue Browsing</a>
+        </div>
+    </div>
+    
+    <div class="connection-status" id="connection-status">
+        Offline Mode
+    </div>
+
+    <script>
+        // Check connection status
+        function updateStatus() {
+            const status = document.getElementById('connection-status');
+            if (navigator.onLine) {
+                status.textContent = 'Back Online';
+                status.classList.add('online');
+                // Return to cart after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'Cart.html';
+                }, 1500);
+            } else {
+                status.textContent = 'Offline Mode';
+                status.classList.remove('online');
+            }
+        }
+
+        // Setup retry button
+        document.getElementById('retry-btn').addEventListener('click', function() {
+            window.location.reload();
+        });
+
+        // Initial check
+        updateStatus();
+
+        // Monitor connection changes
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
+    </script>
+</body>
+</html>
