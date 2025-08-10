@@ -1,3 +1,42 @@
+const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
+const supabaseKey = 'your-supabase-key-here'; // Replace with your actual key
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+// Add these NEW helper functions (place them after the navigation functions)
+async function getUserCart() {
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    if (error || !user) {
+        window.location.href = 'login-email.html';
+        throw new Error('Not Authenticated');
+        return [];
+    }
+    const { data } = await supabaseClient
+        .from('user_carts')
+        .select('items')
+        .eq('user_id', user.id)
+        .single();
+    return data?.items || [];
+}
+
+async function saveUserCart(items) {
+    try {
+        const {error} = await supabaseClient.from('user_carts').upsert(...);
+        if (error) throw error;
+    } catch (e) {
+        console.error("Cart Save Failed:", e);
+        alert("Failed to save cart. Working offline (changes may not persist)");
+    }
+    
+    
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    await supabaseClient
+        .from('user_carts')
+        .upsert({
+            user_id: user.id,
+            items: items,
+            updated_at: new Date()
+        });
+}
 
 
 
@@ -22,8 +61,18 @@ function goHome() {
 
 
 //* START THE CART PROCESS*  *WAD-FOOD-WEB* 
-function loadCartItems() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+async function loadCartItems() {
+    try {
+        const cartItems = await getUserCart();
+        if (cartItems.length === 0) {
+            document.getElementById('cart-item-container').innerHTML = 
+                '<h2>Your cart is empty</h2>';
+            return;
+        
+        }
+    }    catch(e)
+    
+    const cartItems = await getUserCart();
     const cartItemsContainer = document.getElementById('cart-item-container');
     const cartTotal = document.getElementById('cart-total');
     let total = 0;
@@ -67,24 +116,24 @@ function loadCartItems() {
     
 }
 
-function decreaseQuantity(index) {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+async function decreaseQuantity(index) {
+    let cartItems = await getUserCart();
     if (cartItems[index].quantity > 1 ) {
         cartItems[index].quantity -= 1;
     } else {
         cartItems.splice(index, 1);
     }
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    await saveUserCart(cartItems);
     loadCartItems();
     
     
 }
 
-function increaseQuantity(index) {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+async function increaseQuantity(index) {
+    let cartItems = await getUserCart();
     cartItems[index].quantity += 1;
     cartItems.quantity += 1;
-    localStorage.setItem('cartItems', JSON.stringify(cartItems)) || [];
+    await saveUserCart(cartItems);
     
     loadCartItems();
     
@@ -94,10 +143,10 @@ function increaseQuantity(index) {
 
 
 
-function clearCart() {
+async function clearCart() {
 
    
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    let cartItems = await getUserCart();
     
     if(cartItems.length === 0){
         alert(`You don't have any items in your Cart. Browse to add items to your cart`)
@@ -109,7 +158,7 @@ function clearCart() {
     if (confirmation2){
         alert("All Items have been cleared, Keep on shopping.")
         window.location.href = 'index.html'
-        localStorage.removeItem('cartItems') || [];
+        await saveUserCart([]);
     }
        
        
@@ -123,10 +172,10 @@ function clearCart() {
 
 
 
-function removeItem(index) {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+async function removeItem(index) {
+    let cartItems = await getUserCart();
     cartItems.splice(index, 1);
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    await saveUserCart(cartItems);
     loadCartItems();
     
     
@@ -135,8 +184,8 @@ function removeItem(index) {
 
 
 
-function checkout() {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+async function checkout() {
+    let cartItems = await getUserCart();
     if (cartItems.length === 0) {
         alert("You don't have any item in your cart. Browse and add items to your cart to checkout.");
         window.location.href = "index.html"
@@ -172,7 +221,8 @@ function checkout() {
 }
 
 
-document.addEventListener('DOMContentLoaded', loadCartItems, setTimeout(() => console.log(`You can change digits in the Elements tab for education purposes, but it won't change the cart Items and specfications. It may seem like some ordinary website, but is encrypted alongside`)), 1000  )
+document.addEventListener('DOMContentLoaded', async ()  =>{ console.log(`You can change digits in the Elements tab for education purposes, but it won't change the cart Items and specfications. It may seem like some ordinary website, but is encrypted alongside`)), 1000  )}
+
 
 
 
