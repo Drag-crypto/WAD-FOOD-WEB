@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - FOODIES WEB</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href = "logo2.png">
+    <style>
+        .profile-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-details {
+            margin-top: 20px;
+        }
+        .profile-details p {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body style="background-color: bisque;">
+    <!-- Same header as index.html -->
+    <div class="header-buttons">
+        <fieldset>
+            <img class="image2" src="logo2.png">
+            <h2><button style="float: left" class="header-button" onclick="goToSnack()">Snack Menu</button></h2>
+            <h2><button style="float: left;" class="header-button" onclick="goToSoup()">Soups Menu</button></h2>
+            <h2><button style="float: left" class="header-button" onclick="goToContact()">Contact Me</button></h2>
+            <button class="go-to-cart" onclick="goToCart()">
+                <img class="image1" style="float:left" src="Cart.png" width="50" height="50">
+                <span id="cart-count">0</span>
+            </button>
+            <button class="header-button" onclick="logout()" style="float: right;">Logout</button>
+        </fieldset>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>My Profile</h1>
+        </div>
+        
+        <div class="profile-details" id="profile-details">
+            <p>Loading profile...</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <fieldset style="margin-top: 0px; bottom: 0;" class="footer-fieldset">
+            <legend class="footer-legend"></legend>
+            <h2 style="margin-left: 0px;" class="footer-button">
+                &copy; 2024 Maverick Links LTD, All Rights Reserved. Privacy Policy
+            </h2>
+        </fieldset>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Navigation functions (same as index.html)
+        function goToCart() { window.location.href = 'Cart.html'; }
+        function goToSnack() { window.location.href = 'Snack.html'; }
+        function goToSoup() { window.location.href = 'Soup.html'; }
+        function goToContact() { window.location.href = 'Contact me.html'; }
+        function goHome() { window.location.href = 'index.html'; }
+        
+        async function logout() {
+            const { error } = await supabaseClient.auth.signOut();
+            window.location.href = 'index.html';
+        }
+
+        // Load profile data
+        async function loadProfile() {
+            const { data: { user }, error } = await supabaseClient.auth.getUser();
+            const container = document.getElementById('profile-details');
+            
+            if (!user) {
+                container.innerHTML = '<p>Not logged in. <a href="login-email.html">Login here</a></p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Account Created:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                <p><strong>Last Login:</strong> ${new Date(user.last_sign_in_at).toLocaleString()}</p>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+</html>
