@@ -63,6 +63,11 @@ function goHome(){
                 function goToEgusi(){
                             window.location.href='Egusi.html'
                         }
+
+                function goToProfile(){
+                    window.location.href = `UP.html`
+                
+                }
                 function goToAfang(){
                             window.location.href='AfangSoup.html';
                         }
@@ -164,3 +169,4 @@ function updateCartCounter() {
 
 
 document.addEventListener('DOMContentLoaded', updateCartCounter, setTimeout(() => console.log(`You can change digits in the Elements tab for educational purposes, but it won't change the cart Items and specfications. It may seem like some ordinary website, but is encrypted alongside`)), 1000 )
+
