@@ -62,7 +62,7 @@ async function createAccount() {
     
     // If phone provided, update user with same password
     if (phone) {
-      await supabase.auth.updateUser({
+      await supabaseClient.auth.updateUser({
         password // Same password for phone auth
       });
     }
