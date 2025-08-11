@@ -133,6 +133,22 @@
         </div>
         
     </fieldset>
+
+     <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p>Updating cart...</p>
+  </div>
+
+        <h3>Your Cart</h3>
+<div id="cart-item-container">
+
+    
+    
+    
+    
+        <!-- Cart items will be added here automatically -->
+    </div>
+    <div class="cart-summary"></div>
     <h2>Total: ₦<span id="cart-total">0</span></h2>
     <button class="add-to-cart" onclick="clearCart()">Clear your Cart</button>
        <button class="checkout" onclick="checkout()">checkout</button> 
@@ -166,15 +182,7 @@
 
 
 
-    <h3>Your Cart</h3>
-<div id="cart-item-container">
 
-    
-    
-    
-    
-        <!-- Cart items will be added here automatically -->
-    </div>
     
 
 
@@ -188,34 +196,9 @@
 </div>
 
 <!-- Add error container -->
-<div id="cart-error-container" style="display: none;"></div>
 
-<!-- Add this to your cart item container -->
-<template id="cart-item-template">
-  <div class="cart-item">
-    <div class="item-image">
-      <img src="" alt="Product image" class="product-thumbnail">
-    </div>
-    <div class="item-details">
-      <h3 class="product-name"></h3>
-      <p class="product-price"></p>
-      <div class="quantity-control">
-        <button class="qty-decrease">-</button>
-        <span class="product-quantity"></span>
-        <button class="qty-increase">+</button>
-      </div>
-    </div>
-    <button class="remove-item">
-      <img src="trash-icon.svg" alt="Remove" width="20">
-    </button>
-  </div>
-</template>
 
-     <div id="loading-overlay">
-    <div class="spinner"></div>
-    <p>Updating cart...</p>
-  </div>
-  
+    
 
 
 <br>   
@@ -231,7 +214,7 @@
         <legend  class="footer-legend"></legend>
         
 
-        <h2  class="footer-button">2024 Maverick Links LTD, All Rights Reserved</h2>
+        <h2  class="footer-button">&copy; 2025 Maverick Links LTD, All Rights Reserved. </h2>
         
     </fieldset>
 
@@ -240,4 +223,5 @@
     
 
 </body></html>
+
 
