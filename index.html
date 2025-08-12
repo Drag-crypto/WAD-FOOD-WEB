@@ -39,7 +39,7 @@
             <button class="go-to-cart" onclick="goToCart()"><img class="image1" style="float:left" src="Cart.png"
                     width="50" height="50">
                   <h2><button style="float: left" class="header-button" onclick="goToProfile()">Profile</button></h2>
-                <button class="header-button" onclick="logout()" style="float: right;">Logout</button>
+                <button id="auth-button" class="header-button" onclick="logout()" style="float: right;">Logout</button>
                 <span id="cart-count">0</span></button>
     </div>
 
@@ -218,47 +218,7 @@
 
     </div>
         <script>
-             const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M'; // Replace with your actual key
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-        // DOM elements
-        const authButton = document.getElementById('auth-button');
-        const userDetails = document.getElementById('user-details');
-
-        // Check authentication state
-        async function checkAuth() {
-            const { data: { session }, error } = await supabaseClient.auth.getSession();
             
-            if (session) {
-                // User is logged in
-                authButton.textContent = 'Logout';
-                authButton.onclick = logout;
-                
-                // Show user details
-                userDetails.style.display = 'block';
-                document.getElementById('user-email').textContent = session.user.email;
-                
-                // Fetch additional user data if needed
-                const { data: { user } } = await supabaseClient.auth.getUser();
-                document.getElementById('user-name').textContent = user.user_metadata?.full_name || 'Not provided';
-                document.getElementById('user-created').textContent = new Date(user.created_at).toLocaleDateString();
-            } else {
-                // User is not logged in
-                authButton.textContent = 'Login/Signup';
-                authButton.onclick = () => window.location.href = 'login-email.html';
-                userDetails.style.display = 'none';
-            }
-        }
-
-        // Logout function
-        async function logout() {
-            const { error } = await supabaseClient.auth.signOut();
-            window.location.href = 'login-email.html';
-        }
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', checkAuth);
         </script>
 
 
@@ -282,6 +242,7 @@
 
 
 </html>
+
 
 
 
