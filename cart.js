@@ -1,62 +1,47 @@
+// Supabase Client Setup
 const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-async function loadCart() {
-  try {
-    console.log("Attempting to load cart...");
-    
-    // 1. Check authentication
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    if (authError || !user) {
-      console.log("No user logged in");
-      return [];
-    }
+// ========== YOUR ORIGINAL NAVIGATION FUNCTIONS ==========
+function goToCart() { window.location.href = 'Cart.html'; }
+function goToSnack() { window.location.href = 'Snack.html'; }
+function goToSoup() { window.location.href = 'Soup.html'; }
+function goToContact() { window.location.href = 'Contact me.html'; }
+function goHome() { window.location.href = 'index.html'; }
 
-    // 2. Fetch cart from Supabase
+// ========== COMPLETE CART SYSTEM ==========
+
+// 1. FETCH CART (now properly defined)
+async function fetchCart() {
+  try {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) return [];
+
     const { data, error } = await supabaseClient
       .from('user_carts')
       .select('items')
       .eq('user_id', user.id)
       .single();
 
-    if (error) {
-      console.error("Supabase fetch error:", error);
-      // Create cart if doesn't exist
-      if (error.code === 'PGRST116') { // Item not found
-        console.log("Creating new cart for user");
-        const { error: createError } = await supabaseClient
-          .from('user_carts')
-          .insert({ user_id: user.id, items: [] });
-        
-        if (createError) throw createError;
-        return [];
-      }
-      throw error;
-    }
-
-    console.log("Cart loaded successfully:", data.items);
-    return data.items || [];
+    return error ? [] : (data?.items || []);
   } catch (error) {
-    console.error("Failed to load cart:", error);
+    console.error("Fetch cart error:", error);
     return [];
   }
- if (error) {
-  console.log("Using localStorage fallback");
-  return JSON.parse(localStorage.getItem('cartItems')) || [];
-}
 }
 
-async function renderCart() {
-  const cartItems = await loadCart();
+// 2. YOUR ORIGINAL LOAD FUNCTION (now with correct fetchCart call)
+async function loadCartItems() {
+  const cartItems = await fetchCart(); // Now using the properly defined function
   const container = document.getElementById('cart-item-container');
   const totalElement = document.getElementById('cart-total');
-  
-  container.innerHTML = '';
   let total = 0;
 
+  container.innerHTML = '';
+  
   if (cartItems.length === 0) {
-    container.innerHTML = '<p>Your cart is empty</p>';
+    container.innerHTML = '<h2>Your cart is empty</h2>';
     totalElement.textContent = '0.00';
     return;
   }
@@ -66,60 +51,104 @@ async function renderCart() {
     total += itemTotal;
     
     container.innerHTML += `
-      <div class="cart-item">
+      <div class="product" data-id="${item.id}">
         <h3>${item.name}</h3>
-        <p>Price: ₦${item.price.toFixed(2)}</p>
-        <div class="quantity-control">
-          <button onclick="updateQuantity(${index}, -1)">-</button>
-          <span>${item.quantity}</span>
-          <button onclick="updateQuantity(${index}, 1)">+</button>
-        </div>
-        <p>Total: ₦${itemTotal.toFixed(2)}</p>
+        <p>Price: ₦${item.price}</p>
+        <p>
+          Quantity: 
+          <button onclick="decreaseQuantity(${index})">-</button>
+          ${item.quantity}
+          <button onclick="increaseQuantity(${index})">+</button>
+        </p>
+        <p>Total: ₦${itemTotal}</p>
         <button onclick="removeItem(${index})">Remove</button>
       </div>
+      <hr>
     `;
   });
 
   totalElement.textContent = total.toFixed(2);
-  updateCartCount(cartItems);
 }
 
-async function updateQuantity(index, change) {
-  try {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) throw new Error("Not logged in");
+// 3. YOUR QUANTITY FUNCTIONS (unchanged)
+function decreaseQuantity(index) {
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  if (cartItems[index].quantity > 1) {
+    cartItems[index].quantity -= 1;
+  } else {
+    cartItems.splice(index, 1);
+  }
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  loadCartItems();
+}
 
-    const { data: cart, error: fetchError } = await supabaseClient
-      .from('user_carts')
-      .select('items')
-      .eq('user_id', user.id)
-      .single();
+function increaseQuantity(index) {
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  cartItems[index].quantity += 1;
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  loadCartItems();
+}
 
-    if (fetchError) throw fetchError;
+// 4. YOUR REMOVE FUNCTION (unchanged)
+function removeItem(index) {
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  cartItems.splice(index, 1);
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  loadCartItems();
+}
 
-    const items = cart.items || [];
-    const newQuantity = items[index].quantity + change;
-
-    if (newQuantity < 1) {
-      items.splice(index, 1);
-    } else {
-      items[index].quantity = newQuantity;
-    }
-
-    const { error: updateError } = await supabaseClient
-      .from('user_carts')
-      .upsert({ user_id: user.id, items: items });
-
-    if (updateError) throw updateError;
-
-    renderCart();
-  } catch (error) {
-    console.error("Error updating quantity:", error);
-    alert("Failed to update quantity. Please try again.");
+// 5. YOUR CLEAR CART FUNCTION (unchanged)
+function clearCart() {
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  if (cartItems.length === 0) {
+    alert("Your cart is already empty!");
+    return;
+  }
+  if (confirm("Clear your entire cart?")) {
+    localStorage.removeItem('cartItems');
+    loadCartItems();
   }
 }
 
-// Initialize when page loads
+// 6. COMPLETE CHECKOUT FUNCTION (fixed)
+async function checkout() {
+  try {
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      window.location.href = "index.html";
+      return;
+    }
+
+    const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    if (confirm(`Proceed to checkout with ${cartItems.length} items (Total: ₦${total.toFixed(2)})?`)) {
+      // Clear both localStorage AND Supabase cart
+      localStorage.removeItem('cartItems');
+      
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (user) {
+        await supabaseClient
+          .from('user_carts')
+          .upsert({ user_id: user.id, items: [] });
+      }
+      
+      window.location.href = "Note.html";
+    }
+  } catch (error) {
+    console.error("Checkout error:", error);
+    alert("Checkout failed. Please try again.");
+  }
+}
+
+// 7. UPDATE CART COUNT (unchanged)
+function updateCartCount() {
+  const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  const count = cartItems.reduce((total, item) => total + item.quantity, 0);
+  document.getElementById('cart-count').textContent = count;
+}
+
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  renderCart();
+  loadCartItems();
+  updateCartCount();
 });
