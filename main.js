@@ -61,6 +61,14 @@ async function addToCart(button) {
     }
 }
 
+async function updateAuthButton() {
+    const authButton = document.getElementById('auth-button');
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    
+    authButton.textContent = user ? 'Logout' : 'Login';
+    authButton.onclick = user ? logout : () => window.location.href = 'login-email.html';
+}
+
 // Replace the existing updateCartCounter function with this:
 async function updateCartCounter() {
     try {
@@ -89,24 +97,25 @@ async function updateCartCounter() {
 
 // Add this logout function (replace if exists)
 async function logout() {
-    try {
-        const { error } = await supabaseClient.auth.signOut();
-        if (error) throw error;
-        window.location.href = 'login-email.html';
-    } catch (error) {
-        console.error("Logout error:", error);
-        alert("Logout failed. Please try again.");
-    }
+  try {
+    const { error } = await supabaseClient.auth.signOut();
+    if (error) throw error;
+    window.location.href = 'index.html'; // Redirect after logout
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
 }
-
 // Add auth state listener to handle cart updates on login/logout
 supabaseClient.auth.onAuthStateChange((event) => {
     if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         updateCartCounter();
+        updateAuthButton();
     }
 });
 
 // Initialize cart counter when page loads
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCounter();
+    updateAuthButton();
 });
+
