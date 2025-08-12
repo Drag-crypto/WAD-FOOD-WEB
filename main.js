@@ -3,6 +3,78 @@ const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+function goToCart() {
+    window.location.href = 'Cart.html';
+}
+function goToSnack() {
+    window.location.href = 'Snack.html';
+}
+function goToSoup() {
+    window.location.href = 'Soup.html';
+}
+
+function goToContact(){
+    window.location.href = 'Contact me.html';
+}
+function goHome(){
+    window.location.href = 'index.html';
+}
+
+
+        function goToBuns(){
+            window.location.href= 'Buns.html'
+       }
+        function goToCake(){
+            window.location.href= 'Cakes.html'
+       }
+            function goToCookies(){
+                window.location.href= 'Cookies.html'
+            }
+            function goToChin(){
+                window.location.href= 'ChinChin.html'
+            }
+            function goToPuff(){
+                window.location.href= 'Puff.html'
+            }
+                function goToDoughnut(){
+                    window.location.href= 'Doughnut.html'
+                }
+
+                    function goToMeatpie(){
+                        window.location.href = 'Meatpie.html'
+                    }
+    
+                    function goToBurger(){
+                        window.location.href= 'Burger.html'
+                    }
+    
+                        function goToPizza(){
+                            window.location.href= 'Pizza.html'
+                        }
+                        
+                        function goToOkro(){
+                            window.location.href='Okro.html';
+                        }
+                function goToEgusi(){
+                            window.location.href='Egusi.html'
+                        }
+                function goToAfang(){
+                            window.location.href='AfangSoup.html';
+                        }
+
+                function goToOgbonno(){
+                            window.location.href='Ogbonno.html';
+                        }
+                function goToWhiteSoup(){
+                            window.location.href='WhiteSoup.html';
+                        }
+                function goToBitterLeaf(){
+                            window.location.href='BitterLeaf.html';
+                        }
+                function goToVegetableSoup(){
+                            window.location.href='Vegetable.html';
+                        }
+
 // Replace the existing addToCart function with this:
 async function addToCart(button) {
     try {
@@ -118,4 +190,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCounter();
     updateAuthButton();
 });
+
 
