@@ -13,6 +13,10 @@ function goToSoup() {
     window.location.href = 'Soup.html';
 }
 
+function goToProfile(){
+    window.location.href = 'UP.html';
+}
+
 function goToContact(){
     window.location.href = 'Contact me.html';
 }
@@ -190,5 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCounter();
     updateAuthButton();
 });
+
 
 
