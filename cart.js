@@ -1,5 +1,6 @@
 // ===== Supabase Client Setup (shared) =====
 
+console.log("cart.js loaded");
 
 // ===== NAVIGATION =====
 function goToCart() { window.location.href = 'Cart.html'; }
@@ -150,4 +151,5 @@ supabaseClient.auth.onAuthStateChange(async (event) => {
     await loadCartItems();
   }
 });
+
 
