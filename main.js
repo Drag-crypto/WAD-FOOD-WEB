@@ -80,62 +80,43 @@ function goHome(){
                         }
 
 // Replace the existing addToCart function with this:
-async function addToCart(button) {
-    try {
-        // Get user session
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) {
-            alert("Please sign in to add items to your cart");
-            window.location.href = 'login-email.html';
-            return;
-        }
+function addToCart(button) {
+  // Get current user (from Supabase auth)
+  const user = supabase.auth.user();
+  if (!user) {
+    window.location.href = 'login-email.html';
+    return;
+  }
 
-        const productElement = button.closest('.product');
-        const newItem = {
-            id: productElement.dataset.id,
-            name: productElement.dataset.name,
-            price: parseFloat(productElement.dataset.price),
-            quantity: 1
-        };
+  // Your original product extraction
+  const productElement = button.closest('.product');
+  const item = {
+    id: productElement.dataset.id,
+    name: productElement.dataset.name,
+    price: parseFloat(productElement.dataset.price),
+    quantity: 1
+  };
 
-        // Get current cart from Supabase
-        const { data: cartData } = await supabaseClient
-            .from('user_carts')
-            .select('items')
-            .eq('user_id', user.id)
-            .single();
+  // User-specific localStorage key
+  const userCartKey = `cart_${user.email}`;
+  let cartItems = JSON.parse(localStorage.getItem(userCartKey)) || [];
 
-        let currentItems = cartData?.items || [];
-        
-        // Check if item already exists
-        const existingItemIndex = currentItems.findIndex(item => item.id === newItem.id);
-        
-        if (existingItemIndex !== -1) {
-            // Update quantity if exists
-            currentItems[existingItemIndex].quantity += 1;
-        } else {
-            // Add new item if doesn't exist
-            currentItems.push(newItem);
-        }
+  // Your existing logic
+  const existingItem = cartItems.find(i => i.id === item.id);
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cartItems.push(item);
+  }
 
-        // Update cart in Supabase
-        const { error } = await supabaseClient
-            .from('user_carts')
-            .upsert({
-                user_id: user.id,
-                items: currentItems
-            });
-
-        if (error) throw error;
-
-        // Update UI
-        updateCartCounter();
-        alert(`${newItem.name} added to cart!`);
-    } catch (error) {
-        console.error("Error adding to cart:", error);
-        alert("Failed to add item to cart. Please try again.");
-    }
+  localStorage.setItem(userCartKey, JSON.stringify(cartItems));
+  updateCartCounter();
+  alert(`${item.name} added to cart!`);
 }
+
+// 3. COUNTER (localStorage)
+
+
 
 async function updateAuthButton() {
     const authButton = document.getElementById('auth-button');
@@ -182,18 +163,14 @@ async function logout() {
   }
 }
 // Add auth state listener to handle cart updates on login/logout
-supabaseClient.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-        updateCartCounter();
-        updateAuthButton();
-    }
-});
+
 
 // Initialize cart counter when page loads
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCounter();
     updateAuthButton();
 });
+
 
 
 
