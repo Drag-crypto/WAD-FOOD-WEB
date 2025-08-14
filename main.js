@@ -33,13 +33,15 @@ function goToVegetableSoup(){ window.location.href = 'Vegetable.html'; }
 
 // ===== HELPER: per-user cache key =====
 async function getCacheKey() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-  return user ? `cached_cart_${user.id}` : 'cached_cart_guest';
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  return session && session.user ? `cached_cart_${session.user.id}` : 'cached_cart_guest';
 }
 
-// ===== AUTH UI (restored) =====
+// ===== AUTH UI =====
 async function updateAuthButton() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  const user = session ? session.user : null;
+
   const authButton = document.getElementById('auth-button');
   if (!authButton) return;
 
@@ -48,40 +50,34 @@ async function updateAuthButton() {
     authButton.onclick = async () => { await logout(); };
   } else {
     authButton.textContent = 'Login';
-    // Match your original redirect target
-    authButton.onclick = () => window.location.href = 'login-email.html'; // :contentReference[oaicite:3]{index=3}
+    authButton.onclick = () => window.location.href = 'login-email.html';
   }
 }
 
 async function logout() {
   try {
-    const { error } = await supabaseClient.auth.signOut();
-    if (error) throw error;
+    await supabaseClient.auth.signOut();
     window.location.href = 'index.html';
   } catch (err) {
     console.error('Logout error:', err);
   }
 }
 
-// ===== ADD TO CART (supports both inline onclick="addToCart(this)" and programmatic calls) =====
+// ===== Add to Cart =====
 async function addToCart(input) {
   try {
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const user = session ? session.user : null;
     if (!user) {
-      // Match your original behavior
-      window.location.href = 'login-email.html'; // :contentReference[oaicite:4]{index=4}
+      window.location.href = 'login-email.html';
       return;
     }
 
-    // Build product object from either a DOM element or a plain object
+    // Build product object (same as before)
     let product;
     if (input && typeof input === 'object' && input.closest) {
       const btn = input;
       const productElement = btn.closest('.product');
-      if (!productElement) {
-        console.error('No .product element found for button');
-        return;
-      }
       product = {
         id: productElement.dataset.id,
         name: productElement.dataset.name,
@@ -90,11 +86,10 @@ async function addToCart(input) {
         quantity: 1
       };
     } else {
-      // Assume already a {id,name,price,image?,quantity?} object
       product = { quantity: 1, image: 'placeholder.png', ...input };
     }
 
-    // 1) Instant local cache update
+    // Update local cache instantly
     const cacheKey = await getCacheKey();
     let items = JSON.parse(localStorage.getItem(cacheKey) || '[]');
     const idx = items.findIndex(i => i.id === product.id);
@@ -102,13 +97,11 @@ async function addToCart(input) {
     else items.push(product);
     localStorage.setItem(cacheKey, JSON.stringify(items));
 
-    // 2) Persist to Supabase (source of truth)
-    const { error } = await supabaseClient
+    // Push to Supabase
+    await supabaseClient
       .from('user_carts')
       .upsert({ user_id: user.id, items });
-    if (error) throw error;
 
-    // 3) Counter refresh
     await updateCartCounter();
   } catch (err) {
     console.error('Error adding to cart:', err);
@@ -116,19 +109,18 @@ async function addToCart(input) {
   }
 }
 
-// ===== CART COUNTER (fast cache, then refresh from Supabase) =====
+// ===== Cart counter =====
 async function updateCartCounter() {
-  const badge = document.getElementById('cart-count'); // matches your HTML id  :contentReference[oaicite:5]{index=5}
+  const badge = document.getElementById('cart-count');
   if (!badge) return;
 
-  // Instant from cache
   const cacheKey = await getCacheKey();
   const cached = JSON.parse(localStorage.getItem(cacheKey) || '[]');
   badge.textContent = cached.reduce((sum, it) => sum + (it.quantity || 0), 0);
 
-  // Background refresh from Supabase to stay accurate across devices
-  const { data: { user } } = await supabaseClient.auth.getUser();
-  if (!user) { badge.textContent = '0'; return; }
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  const user = session ? session.user : null;
+  if (!user) return;
 
   const { data, error } = await supabaseClient
     .from('user_carts')
@@ -143,24 +135,23 @@ async function updateCartCounter() {
   }
 }
 
-// ===== Auth state wiring =====
+// ===== Auth state handling =====
 supabaseClient.auth.onAuthStateChange(async () => {
   await updateAuthButton();
   await updateCartCounter();
 });
 
-// ===== Page init =====
+// ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   updateAuthButton();
   updateCartCounter();
 
-  // Also wire up any .add-to-cart buttons present without inline handlers
   const buttons = document.querySelectorAll('.add-to-cart');
   buttons.forEach(btn => {
-    // If page already uses onclick="addToCart(this)" we won't double-bind
     if (!btn._wiredToCart) {
       btn.addEventListener('click', function () { addToCart(this); });
       btn._wiredToCart = true;
     }
   });
 });
+
