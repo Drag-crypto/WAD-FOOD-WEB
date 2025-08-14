@@ -1,12 +1,6 @@
 // ===== Use the same Supabase client as main.js =====
 // Assumes main.js already loaded on page OR include initialization here if standalone:
-if (typeof supabaseClient === 'undefined') {
-  const { createClient } = supabase;
-  window.supabaseClient = createClient(
-    'https://qszwotxjykynqtwrglxq.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzendvdHhqeWt5bnF0d3JnbHhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMyODAwMDUsImV4cCI6MjAzODg1NjAwNX0.pG-5fbv3N78EOC2mRQyp4sm66HPnnDQ_XSY25v23c_s'
-  );
-}
+
 
 // ===== DOM helpers =====
 const cartContainer = document.getElementById('cart-item-container');
@@ -151,3 +145,4 @@ function checkout() {
 
 // ===== Initialize =====
 document.addEventListener('DOMContentLoaded', loadCart);
+
