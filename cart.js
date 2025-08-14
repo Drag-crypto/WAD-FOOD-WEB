@@ -45,14 +45,26 @@ async function updateCart(items) {
 async function loadCartItems() {
   const container = document.getElementById('cart-item-container');
   const totalElement = document.getElementById('cart-total');
-  if (!container || !totalElement) return; // Only on Cart.html
+
+  console.log("Loading cart items...");
+  if (!container || !totalElement) {
+    console.error("Cart container or total element not found!");
+    return;
+  }
 
   const items = await fetchCart();
+  console.log("Fetched items:", items);
+
   let total = 0;
   container.innerHTML = '';
 
   if (!items.length) {
-    container.innerHTML = '<h2>Your cart is empty</h2>';
+    container.innerHTML = `
+      <div class="empty-cart">
+        <img src="Cart.png" alt="Empty Cart">
+        <h2>Your cart is empty</h2>
+      </div>
+    `;
     totalElement.textContent = '0.00';
     return;
   }
@@ -60,28 +72,29 @@ async function loadCartItems() {
   items.forEach((item, index) => {
     const itemTotal = (item.price || 0) * (item.quantity || 0);
     total += itemTotal;
+
     container.innerHTML += `
-      <div class="product" data-id="${item.id}">
-        <h3>${item.name}</h3>
-        <p>Price: ₦${item.price}</p>
-        <p>
-          Quantity: 
-          <button onclick="decreaseQuantity(${index})">-</button>
-          ${item.quantity}
-          <button onclick="increaseQuantity(${index})">+</button>
-        </p>
-        <p>Total: ₦${itemTotal}</p>
-        <button onclick="removeItem(${index})">Remove</button>
+      <div class="cart-item" data-id="${item.id}">
+        <img src="${item.image || 'placeholder.png'}" class="product-image" alt="${item.name}">
+        <div>
+          <h3>${item.name}</h3>
+          <p>Price: ₦${item.price}</p>
+          <div class="quantity-control">
+            <button onclick="decreaseQuantity(${index})">-</button>
+            <span>${item.quantity}</span>
+            <button onclick="increaseQuantity(${index})">+</button>
+          </div>
+          <p>Total: ₦${itemTotal}</p>
+        </div>
+        <button class="remove-item" onclick="removeItem(${index})">Remove</button>
       </div>
-      <hr>
     `;
   });
 
   totalElement.textContent = total.toFixed(2);
-  // Also update the header counter if it exists
-  if (typeof updateCartCounter === 'function') updateCartCounter();
+  console.log("Cart rendered successfully");
 }
-
+ 
 async function decreaseQuantity(index) {
   const items = await fetchCart();
   if (!(index in items)) return;
@@ -151,5 +164,6 @@ supabaseClient.auth.onAuthStateChange(async (event) => {
     await loadCartItems();
   }
 });
+
 
 
