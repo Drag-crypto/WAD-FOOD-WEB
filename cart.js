@@ -45,12 +45,15 @@ async function updateCart(items) {
 async function loadCartItems() {
   const container = document.getElementById('cart-item-container');
   const totalElement = document.getElementById('cart-total');
+  const overlay = document.getElemenyById('loading-overlay');
 
   console.log("Loading cart items...");
   if (!container || !totalElement) {
     console.error("Cart container or total element not found!");
     return;
   }
+   if (overlay) overlay.style.display = "flex";
+  container.innerHTML = "<p>Loading your cart...</p>";
 
   const items = await fetchCart();
   console.log("Fetched items:", items);
@@ -92,6 +95,14 @@ async function loadCartItems() {
   });
 
   totalElement.textContent = total.toFixed(2);
+   if (typeof updateCartCounter === 'function') updateCartCounter();
+  } catch (err) {
+    console.error("Error loading cart:", err);
+    container.innerHTML = "<p class='error'>Failed to load cart. Please try again.</p>";
+  } finally {
+    // Hide overlay after everything finishes
+    if (overlay) overlay.style.display = "none";
+  }
   console.log("Cart rendered successfully");
 }
  
@@ -164,6 +175,7 @@ supabaseClient.auth.onAuthStateChange(async (event) => {
     await loadCartItems();
   }
 });
+
 
 
 
