@@ -27,6 +27,32 @@ function goToWhiteSoup()   { window.location.href = 'WhiteSoup.html'; }
 function goToBitterLeaf()  { window.location.href = 'BitterLeaf.html'; }
 function goToVegetableSoup(){ window.location.href = 'Vegetable.html'; }
 
+const favicon = document.createElement('link');
+favicon.rel = 'icon';
+favicon.href = 'logo2.png.png';
+document.head.appendChild(favicon);
+
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.style.fontFamily = "'Audiowide', cursive";
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.remove(), 3000);
+}
+
+const {data: {user} } = await supabaseClient.auth.getUser();
+if (user) {
+  const email = user.email || 'User';
+  if (!window._toastShown) {
+    showToast(`You are logged in as ${email}`, 'info');
+    window._toastShown = true;
+  }
+}
+
+
+
 // ===== Auth button (your original intent preserved) =====
 async function updateAuthButton() {
   const authButton = document.getElementById('auth-button');
@@ -83,6 +109,8 @@ async function addToCart(button) {
   const productElement = button.closest('.product');
   if (!productElement) { console.error('No .product wrapper'); return; }
 
+  
+
   const item = {
     id: productElement.dataset.id,
     name: productElement.dataset.name,
@@ -90,6 +118,9 @@ async function addToCart(button) {
     image: productElement.dataset.image || 'placeholder.png',
     quantity: 1
   };
+  if (!productElement.dataset.image) {
+  console.warn(`No image specified for product "${item.name}". Using fallback image.`);
+}
 
   // Get existing cart
   const { data, error } = await supabaseClient
@@ -110,12 +141,12 @@ async function addToCart(button) {
 
   if (upsertErr) {
     console.error('Add to cart error:', upsertErr);
-    alert('Could not add to cart. Please try again.');
+    showToast('Could not add to cart. Please try again.');
     return;
   }
 
   updateCartCounter();
-  alert(`${item.name} added to cart!`);
+  showToast(`${item.name} added to cart!`);
 }
 
 // ===== Init =====
@@ -124,3 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCartCounter();
   // Your HTML already uses onclick="addToCart(this)" so no extra wiring needed.
 });
+
+supabaseClient.auth.onAuthStateChange(async (event) => {
+    const cacheKey = await getCacheKey();
+    localStorage.removeItem(cacheKey);
+
+    if(event === 'SIGNED_OUT' || event === 'SIGNED_IN') {
+       const cacheKey = await getCacheKey();
+        localStorage.removeItem(cacheKey);
+    }
+});
+
