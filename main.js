@@ -43,10 +43,7 @@ async function updateAuthButton() {
 
   if (user) {
     authBtn.textContent = 'Logout';
-    authBtn.onclick = async () => { 
-      await supabaseClient.auth.signOut(); 
-      location.reload(); 
-    };
+    authBtn.onclick = logout; // always call unified logout()
   } else {
     authBtn.textContent = 'Login';
     authBtn.onclick = () => location.href = 'login-email.html';
@@ -56,6 +53,7 @@ async function updateAuthButton() {
 async function logout() {
   try {
     await supabaseClient.auth.signOut();
+    // Force UI refresh to ensure state is updated
     location.href = 'index.html';
   } catch (err) {
     console.error('Logout error:', err);
@@ -123,7 +121,7 @@ async function updateCartCounter() {
   }
 }
 
-// ===== AUTH STATE =====
+// ===== AUTH STATE CHANGES =====
 supabaseClient.auth.onAuthStateChange(() => {
   updateAuthButton();
   updateCartCounter();
@@ -141,3 +139,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
