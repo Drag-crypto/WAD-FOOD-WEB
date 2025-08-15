@@ -323,20 +323,22 @@ legend {
 }
 
 
-body {
+html, body {
     margin-top: 170px;
 }
 
+main{
+    flex: 1;
+}
+
 .footer {
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    top: 1000;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
+    background: transparent;
+    padding: 10px 0;
+   
 }
 
 
@@ -658,5 +660,6 @@ body {
     opacity: 1;
 
 }
+
 
 
