@@ -10,6 +10,21 @@ function goToContact()     { window.location.href = 'Contact me.html'; }
 function goHome()          { window.location.href = 'index.html'; }
 function goToProfile()     { window.location.href = 'UP.html'; }
 
+const favicon = document.createElement('link');
+favicon.rel = 'icon';
+favicon.href = 'path/to/your-icon.png';
+document.head.appendChild(favicon);
+
+
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.style.fontFamily = "'Audiowide', cursive";
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.remove(), 3000);
+}
 
 
 // DOM
@@ -144,7 +159,7 @@ async function clearCart() {
 function checkout() {
     let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     if (cartItems.length === 0) {
-        alert("You don't have any item in your cart. Browse and add items to your cart to checkout.");
+        showToast("You don't have any item in your cart. Browse and add items to your cart to checkout.");
         window.location.href = "index.html"
         return;
 
@@ -176,3 +191,4 @@ function checkout() {
 
 // Init
 document.addEventListener('DOMContentLoaded', loadCart);
+
