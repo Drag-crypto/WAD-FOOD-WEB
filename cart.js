@@ -1,13 +1,29 @@
-// Assumes main.js is loaded before this file
+// Standalone Supabase init for Cart.html (Cart.html does not load main.js)
+const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bGVhbGVtdnVyZ21wZmxhamJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NjEwMDEsImV4cCI6MjA3MDEzNzAwMX0.TPmel2qGoG5R_hnFAB_pF9ZQob5wMkBhJVPbcqs9q8M';
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+function goToCart()        { window.location.href = 'Cart.html'; }
+function goToSnack()       { window.location.href = 'Snack.html'; }
+function goToSoup()        { window.location.href = 'Soup.html'; }
+function goToContact()     { window.location.href = 'Contact me.html'; }
+function goHome()          { window.location.href = 'index.html'; }
+function goToProfile()     { window.location.href = 'UP.html'; }
+
+
+
+// DOM
 const cartContainer = document.getElementById('cart-item-container');
 const cartTotalEl = document.getElementById('cart-total');
 const overlay = document.getElementById('loading-overlay');
 
+// Helper
 async function getCacheKey() {
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  return session?.user ? `cached_cart_${session.user.id}` : 'cached_cart_guest';
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  return user ? `cached_cart_${user.id}` : 'cached_cart_guest';
 }
 
+// Render
 function renderCart(items) {
   cartContainer.innerHTML = '';
 
@@ -39,7 +55,7 @@ function renderCart(items) {
           <button onclick="updateQuantity('${item.id}', 1)">+</button>
         </div>
       </div>
-      <div>
+      <div class="item-total">
         <strong>₦${itemTotal.toFixed(2)}</strong>
         <button class="remove-item" onclick="removeItem('${item.id}')">Remove</button>
       </div>
@@ -50,6 +66,7 @@ function renderCart(items) {
   cartTotalEl.textContent = total.toFixed(2);
 }
 
+// Load (cache first, then server)
 async function loadCart() {
   if (overlay) overlay.style.display = 'flex';
 
@@ -57,28 +74,31 @@ async function loadCart() {
   const cached = JSON.parse(localStorage.getItem(cacheKey) || '[]');
   renderCart(cached);
 
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  const user = session?.user || null;
-  if (user) {
-    const { data, error } = await supabaseClient
-      .from('user_carts')
-      .select('items')
-      .eq('user_id', user.id)
-      .single();
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) {
+    if (overlay) overlay.style.display = 'none';
+    return;
+  }
 
-    if (!error && data?.items) {
-      renderCart(data.items);
-      localStorage.setItem(cacheKey, JSON.stringify(data.items));
-    }
+  const { data, error } = await supabaseClient
+    .from('user_carts')
+    .select('items')
+    .eq('user_id', user.id)
+    .single();
+
+  if (!error && Array.isArray(data?.items)) {
+    renderCart(data.items);
+    localStorage.setItem(cacheKey, JSON.stringify(data.items));
   }
 
   if (overlay) overlay.style.display = 'none';
 }
 
+// Quantity
 async function updateQuantity(id, delta) {
   const cacheKey = await getCacheKey();
   let items = JSON.parse(localStorage.getItem(cacheKey) || '[]');
-  const idx = items.findIndex(i => i.id === id);
+  const idx = items.findIndex(i => String(i.id) === String(id));
   if (idx === -1) return;
 
   items[idx].quantity += delta;
@@ -87,42 +107,72 @@ async function updateQuantity(id, delta) {
   localStorage.setItem(cacheKey, JSON.stringify(items));
   renderCart(items);
 
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  const user = session?.user || null;
-  if (user) {
-    await supabaseClient.from('user_carts').upsert({ user_id: user.id, items });
-  }
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) return;
+
+  await supabaseClient.from('user_carts').upsert({ user_id: user.id, items });
 }
 
+// Remove
 async function removeItem(id) {
   const cacheKey = await getCacheKey();
   let items = JSON.parse(localStorage.getItem(cacheKey) || '[]');
-  items = items.filter(i => i.id !== id);
+  items = items.filter(i => String(i.id) !== String(id));
 
   localStorage.setItem(cacheKey, JSON.stringify(items));
   renderCart(items);
 
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  const user = session?.user || null;
-  if (user) {
-    await supabaseClient.from('user_carts').upsert({ user_id: user.id, items });
-  }
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) return;
+
+  await supabaseClient.from('user_carts').upsert({ user_id: user.id, items });
 }
 
+// Clear
 async function clearCart() {
   const cacheKey = await getCacheKey();
   localStorage.removeItem(cacheKey);
   renderCart([]);
 
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  const user = session?.user || null;
-  if (user) {
-    await supabaseClient.from('user_carts').delete().eq('user_id', user.id);
-  }
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) return;
+
+  await supabaseClient.from('user_carts').delete().eq('user_id', user.id);
 }
 
+// Checkout
 function checkout() {
-  alert("Checkout is not yet implemented.");
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    if (cartItems.length === 0) {
+        alert("You don't have any item in your cart. Browse and add items to your cart to checkout.");
+        window.location.href = "index.html"
+        return;
+
+    }
+
+     if(cartItems.length === 0){
+
+    }
+
+    const confirmation = confirm("Are you sure you want to proceed with the checkout? ");
+
+    if (confirmation) {
+        alert("Proceeding to checkout!");
+        window.location.href = "note.html";
+        loadCartItems();
+        
+        
+
+    } else {
+        alert("Checkout canceled. You can continue shopping.");
+        window.location.href = 'index.html'
+        loadCartItems();
+        
+        
+        return
+    }
 }
 
+
+// Init
 document.addEventListener('DOMContentLoaded', loadCart);
