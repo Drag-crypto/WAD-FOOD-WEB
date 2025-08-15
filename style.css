@@ -1,6 +1,7 @@
 *{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
     font-size: 24px;
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 }
 
 
@@ -635,3 +636,4 @@ body {
     opacity: 1;
 
 }
+
