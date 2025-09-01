@@ -66,6 +66,11 @@ async function updateAuthButton() {
     : () => window.location.href = 'login-email.html';
 }
 
+async function getCacheKey() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  return user ? `cart_${user.id}` : 'cart_guest';
+}
+
 async function logout() {
   try {
     const { error } = await supabaseClient.auth.signOut();
@@ -166,5 +171,6 @@ supabaseClient.auth.onAuthStateChange(async (event) => {
         localStorage.removeItem(cacheKey);
     }
 });
+
 
 
