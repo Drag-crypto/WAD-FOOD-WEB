@@ -113,6 +113,7 @@ async function updateCartCounter() {
 async function addToCart(button) {
   const { data: { user } } = await supabaseClient.auth.getUser();
   if (!user) { window.location.href = 'login-email.html'; return; }
+  console.log("Button clicked:", button)
 
   const productElement = button.closest('.product');
   if (!productElement) { console.error('No .product wrapper'); return; }
@@ -126,6 +127,7 @@ async function addToCart(button) {
     image: productElement.dataset.image || 'placeholder.png',
     quantity: 1
   };
+  console.log("Item to add:", item);
   if (!productElement.dataset.image) {
   console.warn(`No image specified for product "${item.name}". Using fallback image.`);
 }
@@ -173,6 +175,7 @@ supabaseClient.auth.onAuthStateChange(async (event) => {
         localStorage.removeItem(cacheKey);
     }
 });
+
 
 
 
