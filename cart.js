@@ -165,9 +165,7 @@ function checkout() {
 
     }
 
-     if(cartItems.length === 0){
 
-    }
 
     const confirmation = confirm("Are you sure you want to proceed with the checkout? ");
 
@@ -191,4 +189,5 @@ function checkout() {
 
 // Init
 document.addEventListener('DOMContentLoaded', loadCart);
+
 
