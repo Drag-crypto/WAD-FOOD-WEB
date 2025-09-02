@@ -46,16 +46,15 @@ function showToast(message, type = 'info') {
 
   setTimeout(() => toast.remove(), 3000);
 }
-(async () => {
-const {data: {user} } = await supabaseClient.auth.getUser();
-if (user) {
-  const email = user.email || 'User';
-  if (!window._toastShown) {
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (user && !window._toastShown) {
+    const email = user.email || 'User';
     showToast(`You are logged in as ${email}`, 'info');
     window._toastShown = true;
   }
-}
-})();
+});
+
 
 
 
@@ -175,6 +174,7 @@ supabaseClient.auth.onAuthStateChange(async (event) => {
         localStorage.removeItem(cacheKey);
     }
 });
+
 
 
 
