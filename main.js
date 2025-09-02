@@ -175,6 +175,33 @@ supabaseClient.auth.onAuthStateChange(async (event) => {
     }
 });
 
+window.goToCart = goToCart;
+window.goToSnack = goToSnack;
+window.goToSoup = goToSoup;
+window.goToContact = goToContact;
+window.goHome = goHome;
+window.goToProfile = goToProfile;
+window.goToBuns = goToBuns;
+window.goToCake = goToCake;
+window.goToCookies = goToCookies;
+window.goToChin = goToChin;
+window.goToPuff = goToPuff;
+window.goToDoughnut = goToDoughnut;
+window.goToMeatpie = goToMeatpie;
+window.goToBurger = goToBurger;
+window.goToPizza = goToPizza;
+window.goToOkro = goToOkro;
+window.goToEgusi = goToEgusi;
+window.goToAfang = goToAfang;
+window.goToOgbonno = goToOgbonno;
+window.goToWhiteSoup = goToWhiteSoup;
+window.goToBitterLeaf = goToBitterLeaf;
+window.goToVegetableSoup = goToVegetableSoup;
+window.addToCart = addToCart;
+window.logout = logout;
+
+
+
 
 
 
