@@ -65,16 +65,32 @@ async function updateAuthButton() {
 
 // ===== Logout (plain function) =====
 async function logout() {
+  async function logout() {
   try {
-    console.log('Logout clicked');
+    console.log('Attempting logout...');
     const { error } = await supabaseClient.auth.signOut();
-    if (error) throw error;
-    location.href = 'index.html';
+
+    if (error) {
+      console.error('Supabase signOut error:', error);
+      showToast('Logout failed. Try again.', 'error');
+      return;
+    }
+
+    // Confirm that session cleared
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    console.log('User after signOut:', user);
+    showToast('Logged out successfully!', 'success');
+
+    // Small delay for UX + redirect
+    setTimeout(() => {
+      location.href = 'index.html';
+    }, 500);
   } catch (err) {
-    console.error('Logout error:', err);
-    showToast('Could not log out. Try again.', 'error');
+    console.error('Logout exception:', err);
+    showToast('Unexpected logout error.', 'error');
   }
 }
+
 
 // ===== Cart counter (reads from Supabase) =====
 async function updateCartCounter() {
@@ -183,4 +199,5 @@ supabaseClient.auth.onAuthStateChange(async function (event) {
     updateCartCounter();
   }
 });
+
 
