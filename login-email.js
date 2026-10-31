@@ -1,4 +1,4 @@
-const supabaseUrl = 'https://orziyoasezawxugwgmob.supabase.co';
+const supabaseUrl = 'https://rvlealemvurgmpflajbn.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yeml5b2FzZXphd3h1Z3dnbW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNzU2MzYsImV4cCI6MjA5Mjk1MTYzNn0.1KlhhfKgBdA1B5xh9FE-4spjZTXuVJQkysjBzQpbA-8';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
