@@ -172,14 +172,14 @@ function checkout() {
     if (confirmation) {
         alert("Proceeding to checkout!");
         window.location.href = "note.html";
-        loadCartItems();
+        loadCart();
         
         
 
     } else {
         alert("Checkout canceled. You can continue shopping.");
         window.location.href = 'index.html'
-        loadCartItems();
+        loadCart();
         
         
         return
