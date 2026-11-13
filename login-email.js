@@ -41,7 +41,7 @@ async function login() {
     }
     
     // Redirect after 1 second
-    setTimeout(() => window.location.href = "/kings/index.html", 1000);
+    setTimeout(() => window.location.href = "index.html", 1000);
     
   } catch (error) {
     if (messageEl) {
