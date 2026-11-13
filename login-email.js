@@ -64,4 +64,3 @@ if (window.location.search.includes('from_registration=1')) {
 
 
 
-
