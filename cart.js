@@ -156,34 +156,48 @@ async function clearCart() {
 }
 
 // Checkout
-function checkout() {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    if (cartItems.length === 0) {
-        showToast("You don't have any item in your cart. Browse and add items to your cart to checkout.");
-        window.location.href = "index.html"
+async function checkout() {
+  try {
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+    if (authError) {
+      console.error('Could not identify the current user for checkout:', authError);
+      showToast('Could not load your cart. Please try again.', 'error');
+      return;
+    }
+
+    const cacheKey = user ? `cached_cart_${user.id}` : 'cached_cart_guest';
+    let cartItems = JSON.parse(localStorage.getItem(cacheKey) || '[]');
+
+    if (user) {
+      const { data, error } = await supabaseClient
+        .from('user_carts')
+        .select('items')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Could not load cart for checkout:', error);
+        showToast('Could not load your cart. Please try again.', 'error');
         return;
+      }
 
+      if (Array.isArray(data?.items)) cartItems = data.items;
     }
 
-
-
-    const confirmation = confirm("Are you sure you want to proceed with the checkout? ");
-
-    if (confirmation) {
-        alert("Proceeding to checkout!");
-        window.location.href = "note.html";
-        loadCart();
-        
-        
-
-    } else {
-        alert("Checkout canceled. You can continue shopping.");
-        window.location.href = 'index.html'
-        loadCart();
-        
-        
-        return
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      showToast("You don't have any item in your cart. Browse and add items to your cart to checkout.");
+      return;
     }
+
+    if (!confirm('Are you sure you want to proceed with the checkout?')) return;
+
+    // Checkout.html uses this key to build the order details.
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    window.location.href = 'Note.html';
+  } catch (error) {
+    console.error('Checkout failed:', error);
+    showToast('Could not start checkout. Please try again.', 'error');
+  }
 }
 
 
