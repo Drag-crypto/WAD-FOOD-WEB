@@ -65,7 +65,6 @@ async function updateAuthButton() {
 
 // ===== Logout (plain function) =====
 async function logout() {
-  async function logout() {
   try {
     console.log('Attempting logout...');
     const { error } = await supabaseClient.auth.signOut();
@@ -162,7 +161,6 @@ async function addToCart(button) {
       showToast('Could not add to cart. Please try again.', 'error');
       return;
     }
-
     updateCartCounter();
     showToast(`${item.name} added to cart!`, 'success');
   } catch (err) {
@@ -199,6 +197,3 @@ supabaseClient.auth.onAuthStateChange(async function (event) {
     updateCartCounter();
   }
 });
-
-
-}
