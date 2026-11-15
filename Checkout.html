@@ -49,6 +49,7 @@
         <label for="user-email">Enter your email:</label>
         <input type="email" id="user-email"  name="user_email" required aria-rowspan="10">
         <button class="add-to-cart" type="submit" >Place Order</button>
+        <p id="checkout-error" role="alert" hidden></p>
     </form>
 
     <script type="text/javascript"
@@ -62,11 +63,30 @@
    })();
 
 
-   document.getElementById('checkout-form').addEventListener('submit', function(event) {
+
+   document.getElementById('checkout-form').addEventListener('submit', async function(event) {
     event.preventDefault();
 
-   
-    let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const submitButton = event.currentTarget.querySelector('button[type="submit"]');
+    const errorMessage = document.getElementById('checkout-error');
+    errorMessage.hidden = true;
+
+    let cart;
+    try {
+        cart = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    } catch (error) {
+        console.error('Could not read cart items for checkout:', error);
+        errorMessage.textContent = 'Your order details could not be loaded. Please return to your cart and try again.';
+        errorMessage.hidden = false;
+        return;
+    }
+
+    if (!Array.isArray(cart) || cart.length === 0) {
+        errorMessage.textContent = 'Your cart is empty. Return to your cart and add items before placing an order.';
+        errorMessage.hidden = false;
+        return;
+    }
+
     let itemsList = '';
 
 
@@ -76,9 +96,6 @@
         ` ;
     });
 
-    let total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
- 
     function getTotalPrice(cart) {
         return cart.reduce((total, item) => {
            
@@ -97,28 +114,23 @@
     
     let templateParams = {
         to_email: 'obieanidavid20@gmail.com',
-        to_email:  document.getElementById('user-email').value,
+        reply_to: document.getElementById('user-email').value,
         order_details: itemsList,
         total_price: totalPrice,
-       
-        
     };
 
-    
-
-    
-    emailjs.send("service_i4u6uw4", "template_qhy8dlj", templateParams)
-        .then(function(response) {
-            console.log('SUCCESS!', response.status, response.text);
-
-          
-            localStorage.removeItem('cartItems')
-            
-           window.location.href= 'Thanks.html';
-        }, function(error) {
-            window.location.href = 'Error.html';
-            console.log('FAILED...', error);
-        });
+    submitButton.disabled = true;
+    try {
+        const response = await emailjs.send("service_i4u6uw4", "template_qhy8dlj", templateParams);
+        console.log('SUCCESS!', response.status, response.text);
+        localStorage.removeItem('cartItems');
+        window.location.href = 'Thanks.html';
+    } catch (error) {
+        console.error('Order email failed:', error);
+        errorMessage.textContent = `We couldn't send your order. Please try again.${error?.text ? ` Details: ${error.text}` : ''}`;
+        errorMessage.hidden = false;
+        submitButton.disabled = false;
+    }
 });
 
        
